@@ -97,9 +97,11 @@ function FeedMain({ stores, restaurants, dcenters, posts }) {
                             alt="Banner Image"
                             className='min-h-32 max-h-32 min-w-full object-cover bg-white'
                         />
-                        <div className='text-xl leading-none px-2 py-3 text-gray-200 font-semibold cursor-pointer tracking-wide'>
+                        <Link
+                            to={`/partner/${dc?._id}`}
+                            className='text-xl leading-none px-2 py-3 text-gray-200 font-semibold cursor-pointer tracking-wide'>
                             {dc?.userId?.name}
-                        </div>
+                        </Link>
                     </div>
                 ))}
             </div>

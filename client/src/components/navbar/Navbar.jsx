@@ -15,7 +15,7 @@ function Navbar() {
                     alt="HH"
                 />
             </Link>
-            <div className='flex items-center justify-center gap-2 tracking-wide'>
+            <div className='flex items-center justify-center gap-2'>
                 <Link to={'/feed'} className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
                 <Link to={'/leaderboard'} className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Leaderboard</Link>
                 {user

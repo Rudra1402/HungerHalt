@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { predictHandler } from '../../apis/predictApis';
 import CustomLoader from '../../custom/CustomLoader';
 import hh from "../../assets/images/hungerhalt2.png"
+import { Link } from 'react-router-dom';
 
 function Home() {
     const [typeOfFood, setTypeOfFood] = useState("");
@@ -88,7 +89,10 @@ function Home() {
 
     return (
         <div className='h-[calc(100%-64px)] w-full flex gap-5 items-center justify-center text-gray-100 p-4'>
-            <div className='h-full w-1/2 flex flex-col gap-12 items-center justify-center border border-purple-700 rounded-md p-4'>
+            <div
+                className='h-full w-1/2 flex flex-col gap-12 items-center justify-center border border-purple-700 rounded-md p-4 overflow-auto'
+                style={{ scrollbarWidth: "none" }}
+            >
                 <div className='flex flex-col gap-8 items-center'>
                     {/* <div className='text-5xl leading-none tracking-wide font-medium'>
                         HungerHalt
@@ -103,17 +107,17 @@ function Home() {
                         Rescuing Leftovers, Reviving Communities
                     </div>
                     <div className='flex items-center gap-x-4'>
-                        <button className='px-6 py-3 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Feed</button>
+                        <Link
+                            to={'/feed'}
+                            className='px-5 py-2.5 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Feed</Link>
                         <button className='px-6 py-3 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Items</button>
                     </div>
                 </div>
-                {/* <img
-                    src={fightfoodwaste}
-                    alt="Fight Food Waste"
-                    className='w-1/2 h-auto rounded-lg'
-                /> */}
             </div>
-            <div className='h-full w-1/2 flex flex-col items-center justify-start gap-6 border border-purple-700 rounded-md p-4'>
+            <div
+                className='h-full w-1/2 flex flex-col items-center justify-start gap-6 border border-purple-700 rounded-md p-4 overflow-auto'
+                style={{ scrollbarWidth: "none" }}
+            >
                 <div className='text-2xl underline underline-offset-8'>Prediction AI</div>
                 <div className='flex flex-col gap-4'>
                     <div className='flex items-center gap-x-5 justify-center'>

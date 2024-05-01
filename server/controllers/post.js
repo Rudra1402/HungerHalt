@@ -43,7 +43,7 @@ exports.getPostsByPartner = async (req, res) => {
                 }
             })
             .sort({ createdAt: -1 });
-        return res.status(200).json(posts);
+        return res.status(200).json({ message: 'Posts data by partner', posts });
     } catch (error) {
         res.status(500).json({ error: "Error: " + error });
     }
