@@ -1,7 +1,8 @@
 import api from '../axios/axios'
 import Toast from '../custom/CustomToast'
 
-export const userSignin = async (payload, setUser) => {
+export const userSignin = async (payload, setUser, setIsLoading) => {
+    setIsLoading(true)
     await api.post('/user/signin', payload)
         .then(response => {
             if (response.data?.user?.token) {
@@ -18,6 +19,7 @@ export const userSignin = async (payload, setUser) => {
             }
         }).catch(err => {
             Toast.error(err?.response?.data?.message)
+            setIsLoading(false)
         })
 }
 

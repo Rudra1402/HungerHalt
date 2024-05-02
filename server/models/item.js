@@ -9,17 +9,6 @@ const itemSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    title: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    images: {
-        type: String
-    },
     postId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',

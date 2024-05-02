@@ -13,7 +13,7 @@ function Feed() {
 
     const navigate = useNavigate();
     const { user, setUser } = useContext(AppContext);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [partners, setPartners] = useState(null)
     const [stores, setStores] = useState(null)
     const [restaurants, setRestaurants] = useState(null)
