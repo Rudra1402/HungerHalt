@@ -15,13 +15,13 @@ function Signin() {
 
     const handleSignin = (e) => {
         e.preventDefault();
-        userSignin({ email, password }, setUser)
+        userSignin({ email, password }, setUser, setIsLoading)
     }
 
     const checkUserAuth = () => {
         let userItem = JSON.parse(localStorage.getItem('user'))
         if (userItem?.token) {
-            navigate('/')
+            navigate('/feed')
         } else {
             setIsLoading(false)
         }
@@ -39,7 +39,10 @@ function Signin() {
             {isLoading
                 ? <CustomLoader />
                 : <div className='h-[calc(100%-64px)] w-full flex gap-5 items-center justify-center text-gray-100 p-4'>
-                    <div className='flex flex-col overflow-y-auto items-center gap-8 w-1/2 h-full border p-8 border-purple-700 rounded-md'>
+                    <div
+                        className='flex flex-col overflow-y-auto items-center gap-8 w-1/2 h-full border p-8 border-purple-700 rounded-md'
+                        style={{ scrollbarWidth: "none" }}
+                    >
                         <div className='text-3xl leading-none'>HungerHalt</div>
                         <div className='text-xl px-6 leading-8 tracking-wider'>
                             &rarr; HungerHalt aims to not only provide a solution to reduce food wastage and optimize the quantity of raw materials to be purchased based on consumers, but also a medium to redistribute unprocessed or processed items between stores, restaurants, and any entity in the ‘consumable products’ sector and facilitate in clearing items closer to expiration to those in need.

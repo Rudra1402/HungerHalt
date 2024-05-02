@@ -14,7 +14,7 @@ exports.createItems = async (req, res) => {
         }
 
         await newItem.save();
-        res.status(201).json({ message: "Item Created!", newItem });
+        res.status(201).json({ message: "Item Created!" });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -23,9 +23,14 @@ exports.createItems = async (req, res) => {
 exports.getItems = async (req, res) => {
     try {
         const itemId = req.params.itemId;
-        let items = [];
+        let items = null;
         if (itemId) {
-            items = await Item.findById(itemId);
+            items = await Item.findById(itemId)
+                .populate({
+                    path: "postId",
+                    model: "Post",
+                    select: "title description image"
+                }).sort({ createdAt: -1 });
 
             if (!items) {
                 return res.status(404).json({ message: 'Item not found!' });
@@ -34,7 +39,18 @@ exports.getItems = async (req, res) => {
             return res.status(200).json({ message: 'Item found', item: items });
 
         } else {
-            items = await Item.find({});
+            items = await Item.find({})
+                .populate({
+                    path: "postId",
+                    model: "Post",
+                    select: "title description image"
+                }).sort({ createdAt: -1 });
+
+
+            if (!items) {
+                return res.status(404).json({ message: 'Item not found!' });
+            }
+
             return res.status(200).json({ message: 'All items data', items: items });
         }
     } catch (error) {
@@ -50,7 +66,17 @@ exports.getItemsByPartnerId = async (req, res) => {
             return res.status(404).json({ message: 'Partner not found!' });
         }
 
-        const items = await Item.find({ partnerId: partnerId });
+        const items = await Item.find({ partnerId: partnerId })
+            .populate({
+                path: "postId",
+                model: "Post",
+                select: "title description image"
+            }).sort({ createdAt: -1 });
+
+        if (!items) {
+            return res.status(404).json({ message: 'Item not found!' });
+        }
+
         res.status(200).json({ success: true, message: "Items data", items });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -58,7 +84,7 @@ exports.getItemsByPartnerId = async (req, res) => {
 };
 
 exports.updateItem = async (req, res) => {
-    const { quantity, price, title, description, imageUrl, postId, partnerId } = req.body;
+    const { quantity, price, postId, partnerId } = req.body;
     const { itemId } = req.params;
     try {
         const partner = await Partner.findById(partnerId);
@@ -80,17 +106,8 @@ exports.updateItem = async (req, res) => {
         if (price !== undefined) {
             item.price = price;
         }
-        if (title !== undefined) {
-            item.title = title;
-        }
-        if (description !== undefined) {
-            item.description = description;
-        }
         if (postId !== undefined) {
             item.postId = postId;
-        }
-        if (imageUrl) {
-            item.images.push(imageUrl);
         }
 
         if (quantityDifference) {
