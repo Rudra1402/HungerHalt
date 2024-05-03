@@ -8,7 +8,7 @@ import { formatRelativeTime } from '../../utils/formatTime';
 function Clearance() {
 
     const navigate = useNavigate();
-    const { user, setUser } = useContext(AppContext);
+    const { user, setUser, cart, setCart } = useContext(AppContext);
     const [isLoading, setIsLoading] = useState(true)
     const [items, setItems] = useState(null)
 
@@ -20,6 +20,30 @@ function Clearance() {
             navigate("/signin")
         }
     }, [user])
+
+    const handleAddToCart = (item) => {
+        let quantity = item?.quantity;
+        let itemId = item?._id;
+
+        const itemIndex = cart.findIndex((c) => c._id === itemId);
+
+        if (itemIndex === -1) {
+            let tempItem = { ...item, oq: 1 }
+            setCart([...cart, tempItem]);
+        } else {
+            let updatedCart = [...cart];
+
+            if (updatedCart[itemIndex].oq == quantity)
+                return console.log("Reached max quantity!")
+
+            updatedCart[itemIndex] = { ...updatedCart[itemIndex], oq: updatedCart[itemIndex].oq + 1 };
+            setCart(updatedCart);
+        }
+    }
+
+    useEffect(() => {
+        console.log(cart)
+    }, [cart])
 
     return (
         <>
@@ -61,6 +85,7 @@ function Clearance() {
                                     <div className='flex items-center justify-center gap-x-3 mt-1'>
                                         <button
                                             className='w-full bg-blue-600 text-gray-100 px-3 py-2 rounded leading-none !m-0'
+                                            onClick={() => handleAddToCart(item)}
                                         >Add to cart</button>
                                     </div>
                                 </div>

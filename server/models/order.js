@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-    partnerId: {
+    partnerId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
+    }],
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -16,22 +16,18 @@ const orderSchema = new mongoose.Schema({
         ref: 'Item',
         required: true
     }],
-    description: {
-        type: String,
-        required: true
-    },
     totalPrice: {
         type: Number,
         required: true
     },
     paymentMode: {
         type: String,
-        enum: ['Pre Paid', 'Pay on pick up'],
+        enum: ['pre', 'post'],
         required: true
     },
     isOrderIDVerified: {
         type: Boolean,
-        required: true
+        default: false
     },
     paymentStatus: {
         type: Boolean,

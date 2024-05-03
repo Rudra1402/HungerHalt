@@ -76,21 +76,31 @@ function PartnerProfile() {
                             </p>
                             <p className='!m-0 text-gray-300 tracking-wide'>{partner?.description}</p>
                             <div className='flex flex-col gap-y-4 py-2 w-full'>
-                                <div className='flex items-center gap-x-0 text-gray-400'>
-                                    <div
-                                        className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab == 1 ? '!border-b-gray-200 text-gray-200' : '')}
-                                        onClick={() => setTab(1)}
-                                    >Posts</div>
-                                    <div
-                                        className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab == 2 ? '!border-b-gray-200 text-gray-200' : '')}
-                                        onClick={() => setTab(2)}
-                                    >Items</div>
+                                <div className='flex items-end justify-between gap-x-4'>
+                                    <div className='flex items-center gap-x-0 text-gray-400'>
+                                        <div
+                                            className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab == 1 ? '!border-b-gray-200 text-gray-200' : '')}
+                                            onClick={() => setTab(1)}
+                                        >Posts</div>
+                                        <div
+                                            className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab == 2 ? '!border-b-gray-200 text-gray-200' : '')}
+                                            onClick={() => setTab(2)}
+                                        >Items</div>
+                                    </div>
+                                    {tab == 1
+                                        ? <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>Add Post</button>
+                                        : null
+                                    }
+                                    {tab == 2
+                                        ? <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>Add Item</button>
+                                        : null
+                                    }
                                 </div>
                                 {tab == 1
                                     ? <div className='flex items-start justify-start flex-wrap w-full gap-4'>
                                         {posts?.map((post, index) => (
                                             <div
-                                                className='flex flex-col rounded overflow-hidden border border-gray-600 w-[340px]'
+                                                className='flex flex-col rounded overflow-hidden border border-gray-600 w-[32.25%] min-w-[340px]'
                                                 key={index}
                                             >
                                                 <img
