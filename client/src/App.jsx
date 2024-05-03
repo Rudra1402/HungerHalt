@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Feed from './components/feed/Feed';
 import PartnerProfile from './components/profiles/PartnerProfile';
+import Cart from './components/cart/Cart';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />

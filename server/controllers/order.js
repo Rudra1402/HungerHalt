@@ -20,6 +20,11 @@ exports.createOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
     try {
         const orders = await Order.find().sort({ createdAt: -1 });
+
+        if (!orders) {
+            return res.status(404).json({ message: 'No orders found!' })
+        }
+
         res.status(200).json({ message: 'Orders Data', orders });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -35,6 +40,11 @@ exports.getOrdersByPartner = async (req, res) => {
         }
 
         const orders = await Order.find({ partnerId: partnerId });
+
+        if (!orders) {
+            return res.status(404).json({ message: 'No orders found!' })
+        }
+
         return res.status(201).json({ message: 'Orders Data', orders });
     } catch (error) {
         res.status(500).json({ message: error.message });

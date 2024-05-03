@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import AppContext from '../../context/AppContext'
 import hh from "../../assets/images/hungerhalt3.png"
+import cart from "../../assets/images/cart.png"
 
 function Navbar() {
     const { user, setUser } = useContext(AppContext);
+    const [openDropdown, setOpenDropdown] = useState(false)
     return (
-        <div className='!h-16 w-full px-12 py-2 flex items-center justify-between gap-6 text-gray-300 text-xl leading-none border-b border-b-purple-700'>
+        <div className='!h-16 w-full px-10 py-2 flex items-center justify-between gap-6 text-gray-300 text-base leading-none border-b border-b-purple-700'>
             <Link to={'/'} className='tracking-wider font-semibold'>
                 <img
                     className='h-10 w-auto rounded'
@@ -16,21 +18,71 @@ function Navbar() {
                 />
             </Link>
             <div className='flex items-center justify-center gap-2'>
-                <Link to={'/feed'} className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
-                <Link to={'/leaderboard'} className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Leaderboard</Link>
+                <Link to={'/feed'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
+                <Link to={'/leaderboard'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Leaderboard</Link>
                 {user
-                    ? <Link to={'/'} className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>{user?.email?.split("@")[0]}</Link>
+                    ? <div className='relative'>
+                        <div
+                            className='w-10 h-10 rounded-full bg-gray-700 shadow shadow-gray-600 flex items-center justify-center text-lg leading-none cursor-pointer'
+                            onClick={() => setOpenDropdown(!openDropdown)}
+                        >
+                            {user?.email?.split("@")[0][0].toUpperCase()}
+                        </div>
+                        {openDropdown
+                            ? <div
+                                className='rounded flex flex-col items-center justify-start bg-gray-300 text-gray-800 absolute py-2 px-2 right-0 top-11 z-50'
+                            >
+                                <Link
+                                    to={'/profile'}
+                                    className='cursor-pointer px-3 py-2.5 rounded hover:bg-gray-200 w-full'
+                                    onClick={() => setOpenDropdown(false)}
+                                >Profile</Link>
+                                <Link
+                                    to={'/cart'}
+                                    className='cursor-pointer px-3 py-2.5 rounded hover:bg-gray-200 w-full'
+                                    onClick={() => setOpenDropdown(false)}
+                                >Cart</Link>
+                                <div
+                                    className='cursor-pointer px-3 py-2.5 rounded hover:bg-gray-200 w-full'
+                                    onClick={() => {
+                                        localStorage.clear()
+                                        setOpenDropdown(false)
+                                        setUser(null)
+                                    }}
+                                >Logout</div>
+                            </div>
+                            : null
+                        }
+                    </div>
+                    : null
+                }
+                {/* {user
+                    ? <Link to={'/'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>{user?.email?.split("@")[0]}</Link>
                     : null
                 }
                 {user
                     ? <div
-                        className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'
+                        className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'
                         onClick={() => {
                             localStorage.clear()
                             setUser(null)
                         }}
                     >Logout</div>
-                    : <Link to={'/signin'} className='cursor-pointer px-3 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                    : <Link to={'/signin'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                }
+                {user
+                    ? <Link to={'/cart'} className='cursor-pointer px-2 py-1.5'>
+                        <img
+                            src={cart}
+                            alt="Cart Logo"
+                            className='bg-white h-8 w-8 rounded'
+                        />
+                    </Link>
+                    : null
+                } */}
+                {!user
+                    ? <Link to={'/signin'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                    : null
                 }
             </div>
         </div>

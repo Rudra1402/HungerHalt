@@ -3,6 +3,7 @@ import AppContext from "./AppContext";
 
 const AppProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [cart, setCart] = useState([]);
 
     useEffect(() => {
         if (!user) {
@@ -13,7 +14,7 @@ const AppProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ user, setUser }}>
+        <AppContext.Provider value={{ user, setUser, cart, setCart }}>
             {children}
         </AppContext.Provider>
     );
