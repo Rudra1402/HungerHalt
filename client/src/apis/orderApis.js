@@ -21,3 +21,24 @@ export const placeOrder = async (payload, setIsLoading) => {
             setIsLoading(false)
         })
 }
+
+export const getOrdersByPartnerId = async (id, setOrders, setPartner, setIsLoading) => {
+    setIsLoading(true)
+    let userId = getUserId()
+    let headers = {}
+    if (userId) {
+        headers = { ...headers, userId: userId };
+    }
+
+    const config = headers && Object.keys(headers).length > 0 ? { headers } : {};
+
+    await api.get(`/order/${id}`, config)
+        .then(response => {
+            setOrders(response.data?.orders)
+            setPartner(response.data?.partner)
+            setIsLoading(false)
+        }).catch(err => {
+            console.log(err?.response?.data?.message)
+            setIsLoading(false)
+        })
+}
