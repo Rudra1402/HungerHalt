@@ -23,14 +23,14 @@ function Navbar() {
                 {user
                     ? <div className='relative'>
                         <div
-                            className='w-10 h-10 rounded-full bg-gray-700 shadow shadow-gray-600 flex items-center justify-center text-lg leading-none cursor-pointer'
+                            className='w-9 h-9 rounded-full bg-gray-700 shadow shadow-gray-600 flex items-center justify-center text-lg leading-none cursor-pointer'
                             onClick={() => setOpenDropdown(!openDropdown)}
                         >
                             {user?.email?.split("@")[0][0].toUpperCase()}
                         </div>
                         {openDropdown
                             ? <div
-                                className='rounded flex flex-col items-center justify-start bg-gray-300 text-gray-800 absolute py-2 px-2 right-0 top-11 z-50'
+                                className='rounded flex flex-col items-center justify-start bg-gray-100 text-gray-800 absolute py-2 px-2 right-0 top-11 z-50'
                             >
                                 <Link
                                     to={'/profile'}

@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Feed from './components/feed/Feed';
 import PartnerProfile from './components/profiles/PartnerProfile';
 import Cart from './components/cart/Cart';
+import Orders from './components/orders/Orders';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/feed" element={<Feed />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/orders/:id" element={<Orders />} />
           <Route path="/partner/:id" element={<PartnerProfile />} />
         </Routes>
       </Router>

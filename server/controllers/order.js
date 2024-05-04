@@ -34,18 +34,28 @@ exports.getOrders = async (req, res) => {
 exports.getOrdersByPartner = async (req, res) => {
     const { partnerId } = req.params;
     try {
-        const partner = await Partner.findById(partnerId);
+        const partner = await Partner.findById(partnerId)
+            .populate({
+                path: 'userId',
+                model: 'User',
+                select: 'name'
+            });
         if (!partner) {
             return res.status(404).json({ message: 'Partner not found!' })
         }
 
-        const orders = await Order.find({ partnerId: partnerId });
+        const orders = await Order.find({ partnerId: { $in: partnerId } })
+            .populate({
+                path: 'userId',
+                model: 'User',
+                select: 'name'
+            })
 
         if (!orders) {
             return res.status(404).json({ message: 'No orders found!' })
         }
 
-        return res.status(201).json({ message: 'Orders Data', orders });
+        return res.status(201).json({ message: 'Orders Data', orders, partner });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
