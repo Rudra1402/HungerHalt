@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getOrdersByPartnerId } from '../../apis/orderApis';
+import { getOrdersByPartnerId, updateOrder } from '../../apis/orderApis';
 import AppContext from '../../context/AppContext';
 import CustomLoader from '../../custom/CustomLoader';
 import { formatRelativeTime } from '../../utils/formatTime'
@@ -24,6 +24,10 @@ function Orders() {
         }
     }, [user])
 
+    const handleVerifyButton = (oId) => {
+        updateOrder(oId, id)
+    }
+
     return (
         <>
             {isLoading
@@ -35,7 +39,7 @@ function Orders() {
                         <div
                             className='text-xl leading-none pb-3 border-b border-b-gray-600 w-full'
                         >Orders / {partner ? partner?.userId?.name : "Partner"}</div>
-                        <div className='flex items-start justify-start gap-4'>
+                        <div className='flex items-start justify-start flex-wrap gap-4'>
                             {orders?.map((order, index) => (
                                 <div
                                     key={index}
@@ -44,18 +48,22 @@ function Orders() {
                                     <div className='tracking-wide'>Payment Status - {order?.paymentMode == "pre" ? "Paid" : "Pending"}</div>
                                     <div className='tracking-wide'>Total Amount - ${order?.totalPrice}</div>
                                     {/* <div className='tracking-wide'>Verification ID - {order?.uniqueOrderId}</div> */}
-                                    <div className='flex items-center gap-x-2 py-2'>
-                                        <input
-                                            type="text"
-                                            className='w-1/2 h-8 p-1 rounded text-gray-800'
-                                            value={orderId}
-                                            onChange={e => setOrderId(e.target.value)}
-                                            placeholder='Enter Order ID'
-                                        />
-                                        <button
-                                            className='w-1/2 rounded h-8 bg-gray-600 text-gray-200 p-1'
-                                        >Verify</button>
-                                    </div>
+                                    {!order?.isOrderIDVerified
+                                        ? <div className='flex items-center gap-x-2 py-2'>
+                                            <input
+                                                type="text"
+                                                className='w-1/2 h-8 p-1 rounded text-gray-800'
+                                                value={orderId}
+                                                onChange={e => setOrderId(e.target.value)}
+                                                placeholder='Enter Order ID'
+                                            />
+                                            <button
+                                                className='w-1/2 rounded h-8 bg-gray-600 text-gray-200 p-1'
+                                                onClick={() => handleVerifyButton(orderId)}
+                                            >Verify</button>
+                                        </div>
+                                        : <div className='tracking-wide'>Order Status - Completed ✅</div>
+                                    }
                                     <div className='text-gray-400 mt-1 text-sm tracking-wide'>{new Date(order?.createdAt).toLocaleString()} ({formatRelativeTime(order?.createdAt)})</div>
                                 </div>
                             ))}
