@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import AppContext from '../../context/AppContext';
 import CustomLoader from '../../custom/CustomLoader';
 import classNames from 'classnames';
@@ -19,8 +19,12 @@ function Feed() {
     const [restaurants, setRestaurants] = useState(null)
     const [dcenters, setDcenters] = useState(null)
     const [posts, setPosts] = useState(null)
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [tab, setTab] = useState(1)
+    const [tab, setTab] = useState(() => {
+        const tabParam = searchParams.get('tab');
+        return tabParam ? parseInt(tabParam, 10) : 1;
+    });
 
     useEffect(() => {
         let userItem = JSON.parse(localStorage.getItem('user'))
@@ -34,7 +38,8 @@ function Feed() {
 
     useEffect(() => {
         document.title = "HungerHalt / Feed"
-    }, [])
+        setSearchParams({ tab: tab.toString() });
+    }, [tab, setSearchParams])
 
     return (
         <>

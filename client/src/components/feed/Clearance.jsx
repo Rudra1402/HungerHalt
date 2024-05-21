@@ -41,10 +41,6 @@ function Clearance() {
         }
     }
 
-    useEffect(() => {
-        console.log(cart)
-    }, [cart])
-
     return (
         <>
             {isLoading
