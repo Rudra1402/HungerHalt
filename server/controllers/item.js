@@ -44,6 +44,15 @@ exports.getItems = async (req, res) => {
                     path: "postId",
                     model: "Post",
                     select: "title description image"
+                }).populate({
+                    path: "partnerId",
+                    model: "Partner",
+                    select: "userId",
+                    populate: {
+                        path: "userId",
+                        model: "User",
+                        select: "name"
+                    }
                 }).sort({ createdAt: -1 });
 
 
@@ -71,6 +80,15 @@ exports.getItemsByPartnerId = async (req, res) => {
                 path: "postId",
                 model: "Post",
                 select: "title description image"
+            }).populate({
+                path: "partnerId",
+                model: "Partner",
+                select: "userId",
+                populate: {
+                    path: "userId",
+                    model: "User",
+                    select: "name"
+                }
             }).sort({ createdAt: -1 });
 
         if (!items) {
