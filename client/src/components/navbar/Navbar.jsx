@@ -9,7 +9,7 @@ function Navbar() {
     const { user, setUser } = useContext(AppContext);
     const [openDropdown, setOpenDropdown] = useState(false)
     return (
-        <div className='!h-16 w-full px-10 py-2 flex items-center justify-between gap-6 text-gray-300 text-base leading-none border-b border-b-purple-700'>
+        <div className='!h-16 w-full px-10 py-2 flex items-center justify-between gap-6 text-gray-300 text-lg leading-none border-b border-b-purple-700'>
             <Link to={'/'} className='tracking-wider font-semibold'>
                 <img
                     className='h-10 w-auto rounded'
@@ -30,20 +30,20 @@ function Navbar() {
                         </div>
                         {openDropdown
                             ? <div
-                                className='rounded flex flex-col items-center justify-start bg-gray-100 text-gray-800 absolute py-2 px-2 right-0 top-11 z-50'
+                                className='rounded flex flex-col items-center justify-start bg-gray-100 text-gray-800 absolute py-2 px-2 min-w-40 right-0 top-11 z-50 border border-gray-400 select-none'
                             >
                                 <Link
                                     to={'/profile'}
-                                    className='cursor-pointer px-3 py-2.5 rounded hover:bg-gray-200 w-full'
+                                    className='cursor-pointer px-3 py-2.5 text-center rounded hover:bg-gray-200 w-full'
                                     onClick={() => setOpenDropdown(false)}
                                 >Profile</Link>
                                 <Link
                                     to={'/cart'}
-                                    className='cursor-pointer px-3 py-2.5 rounded hover:bg-gray-200 w-full'
+                                    className='cursor-pointer px-3 py-2.5 text-center rounded hover:bg-gray-200 w-full'
                                     onClick={() => setOpenDropdown(false)}
                                 >Cart</Link>
                                 <div
-                                    className='cursor-pointer px-3 py-2.5 rounded hover:bg-gray-200 w-full'
+                                    className='cursor-pointer px-3 py-2.5 text-center rounded hover:bg-gray-200 w-full'
                                     onClick={() => {
                                         localStorage.clear()
                                         setOpenDropdown(false)

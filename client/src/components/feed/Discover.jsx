@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Discover({ stores, restaurants, dcenters }) {
     return (
@@ -24,9 +25,11 @@ function Discover({ stores, restaurants, dcenters }) {
                                 alt="Banner Image"
                                 className='min-h-36 max-h-36 w-full object-cover bg-white'
                             />
-                            <div className='px-2 py-3 text-gray-200 font-semibold tracking-wide text-xl leading-none'>
+                            <Link
+                                to={`/partner/${s?._id}`}
+                                className='px-2 py-3 text-gray-200 font-semibold tracking-wide text-xl leading-none'>
                                 {s?.userId?.name}
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>
@@ -49,9 +52,11 @@ function Discover({ stores, restaurants, dcenters }) {
                                 alt="Banner Image"
                                 className='min-h-36 max-h-36 w-full object-cover bg-white'
                             />
-                            <div className='px-2 py-3 text-gray-200 font-semibold tracking-wide text-xl leading-none'>
+                            <Link
+                                to={`/partner/${r?._id}`}
+                                className='px-2 py-3 text-gray-200 font-semibold tracking-wide text-xl leading-none'>
                                 {r?.userId?.name}
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>
@@ -74,9 +79,11 @@ function Discover({ stores, restaurants, dcenters }) {
                                 alt="Banner Image"
                                 className='min-h-36 max-h-36 w-full object-cover bg-white'
                             />
-                            <div className='px-2 py-3 text-gray-200 font-semibold tracking-wide text-xl leading-none'>
+                            <Link
+                                to={`/partner/${d?._id}`}
+                                className='px-2 py-3 text-gray-200 font-semibold tracking-wide text-xl leading-none'>
                                 {d?.userId?.name}
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>

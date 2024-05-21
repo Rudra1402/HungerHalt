@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getItems } from '../../apis/itemApis';
 import AppContext from '../../context/AppContext';
 import CustomLoader from '../../custom/CustomLoader';
@@ -41,10 +41,6 @@ function Clearance() {
         }
     }
 
-    useEffect(() => {
-        console.log(cart)
-    }, [cart])
-
     return (
         <>
             {isLoading
@@ -67,9 +63,12 @@ function Clearance() {
                                 />
                                 <div className='flex flex-col px-2 py-3 gap-y-2'>
                                     <div className='flex items-center justify-between'>
-                                        <div className='text-blue-300 cursor-pointer'>
-                                            {item?.postId?.title}
-                                        </div>
+                                        <Link
+                                            to={`/partner/${item?.partnerId?._id}`}
+                                            className='text-blue-300 cursor-pointer'
+                                        >
+                                            {item?.partnerId?.userId?.name}
+                                        </Link>
                                         <div className='text-sm leading-none text-gray-400'>
                                             {formatRelativeTime(item?.createdAt)}
                                         </div>
