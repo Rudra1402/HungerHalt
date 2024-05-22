@@ -47,7 +47,7 @@ exports.getItems = async (req, res) => {
                 }).populate({
                     path: "partnerId",
                     model: "Partner",
-                    select: "userId",
+                    select: "userId partnerType",
                     populate: {
                         path: "userId",
                         model: "User",
@@ -83,7 +83,7 @@ exports.getItemsByPartnerId = async (req, res) => {
             }).populate({
                 path: "partnerId",
                 model: "Partner",
-                select: "userId",
+                select: "userId partnerType",
                 populate: {
                     path: "userId",
                     model: "User",

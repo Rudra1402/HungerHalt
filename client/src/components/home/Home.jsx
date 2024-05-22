@@ -88,9 +88,11 @@ function Home() {
     }, [])
 
     return (
-        <div className='h-[calc(100%-64px)] w-full flex gap-5 items-center justify-center text-gray-100 p-4'>
+        <div className='h-[calc(100% - 64px)] overflow-y-auto w-full flex flex-col gap-5 items-center text-gray-100 p-4'
+            style={{ scrollbarWidth: "none" }}
+        >
             <div
-                className='h-full w-1/2 flex flex-col gap-12 items-center justify-center border border-purple-700 rounded-md p-4 overflow-auto'
+                className='min-h-full w-2/3 flex flex-col gap-12 items-center justify-center border border-purple-700 rounded-md p-4'
                 style={{ scrollbarWidth: "none" }}
             >
                 <div className='flex flex-col gap-8 items-center'>
@@ -115,7 +117,7 @@ function Home() {
                 </div>
             </div>
             <div
-                className='h-full w-1/2 flex flex-col items-center justify-start gap-6 border border-purple-700 rounded-md p-4 overflow-auto'
+                className='h-fit w-2/3 flex flex-col items-center justify-start gap-6 border border-purple-700 rounded-md p-4'
                 style={{ scrollbarWidth: "none" }}
             >
                 <div className='text-2xl underline underline-offset-8'>Prediction AI</div>
