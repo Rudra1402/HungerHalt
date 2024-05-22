@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { placeOrder } from '../../apis/orderApis';
 import AppContext from '../../context/AppContext';
 import CustomLoader from '../../custom/CustomLoader'
@@ -73,7 +73,13 @@ function Cart() {
                         className='flex flex-col gap-y-3 w-[80%] overflow-y-auto'
                         style={{ scrollbarWidth: "none" }}
                     >
-                        <div className='mb-1 text-xl leading-none font-semibold tracking-wide'>Cart</div>
+                        <div className='flex items-center justify-between gap-x-6 pb-3 border-b border-b-gray-600 '>
+                            <div className='text-2xl leading-none font-semibold tracking-wide'>Cart</div>
+                            <Link
+                                to={'/feed?tab=3'}
+                                className='text-blue-300'
+                            >View Clearance Items</Link>
+                        </div>
                         {cart?.map((c, index) => {
                             // totalPrice += c?.price * c?.oq
                             return (
@@ -100,42 +106,43 @@ function Cart() {
                             )
                         })}
                         {cart?.length == 0
-                            ? <div className='text-2xl leading-none text-gray-400'>Cart is empty!</div>
-                            : null
+                            ? <div className='text-xl leading-none text-gray-400'>Cart is empty!</div>
+                            : <div className='flex flex-col my-3 gap-y-3'>
+                                <div className='text-2xl leading-none pb-3 border-b border-b-gray-700'>Summary</div>
+                                <div className='flex flex-col gap-y-4 px-1'>
+                                    <div className='flex items-center justify-between gap-x-5 px-1'>
+                                        <div className='text-lg leading-none text-gray-400'>Price</div>
+                                        <div className='text-xl leading-none tracking-wide'>${totalPrice.toFixed(2)}</div>
+                                    </div>
+                                    <div className='flex items-center justify-between gap-x-5 px-1'>
+                                        <div className='text-lg leading-none text-gray-400'>HST (13%)</div>
+                                        <div className='text-xl leading-none tracking-wide'>${hst.toFixed(2)}</div>
+                                    </div>
+                                    <div className='flex items-center justify-between gap-x-5 px-1'>
+                                        <div className='text-lg leading-none text-gray-400'>Total Price</div>
+                                        <div className='text-xl leading-none tracking-wide'>${finalPrice.toFixed(2)}</div>
+                                    </div>
+                                </div>
+                                <div className='flex flex-col gap-1 my-3'>
+                                    <div className='text-gray-400'>Payment Mode</div>
+                                    <select
+                                        value={paymentMode}
+                                        onChange={e => setPaymentMode(e.target.value)}
+                                        name="paymentMode"
+                                        id="paymentMode"
+                                        className='w-72 h-9 p-1 rounded-md text-gray-800 text-lg leading-none'
+                                    >
+                                        <option value="">Select</option>
+                                        <option value="pre">Online</option>
+                                        <option value="post">Pay on pick up</option>
+                                    </select>
+                                </div>
+                                <button
+                                    className='px-4 py-1.5 rounded bg-blue-800 w-fit'
+                                    onClick={handleOrderPlacement}
+                                >Proceed to checkout</button>
+                            </div>
                         }
-                        <div className='text-2xl leading-none mt-3 mb-1 pb-3 border-b border-b-gray-700'>Summary</div>
-                        <div className='flex flex-col gap-y-4 px-1'>
-                            <div className='flex items-center justify-between gap-x-5 px-1'>
-                                <div className='text-lg leading-none text-gray-400'>Price</div>
-                                <div className='text-xl leading-none tracking-wide'>${totalPrice.toFixed(2)}</div>
-                            </div>
-                            <div className='flex items-center justify-between gap-x-5 px-1'>
-                                <div className='text-lg leading-none text-gray-400'>HST (13%)</div>
-                                <div className='text-xl leading-none tracking-wide'>${hst.toFixed(2)}</div>
-                            </div>
-                            <div className='flex items-center justify-between gap-x-5 px-1'>
-                                <div className='text-lg leading-none text-gray-400'>Total Price</div>
-                                <div className='text-xl leading-none tracking-wide'>${finalPrice.toFixed(2)}</div>
-                            </div>
-                        </div>
-                        <div className='flex flex-col gap-1 my-3'>
-                            <div className='text-gray-400'>Payment Mode</div>
-                            <select
-                                value={paymentMode}
-                                onChange={e => setPaymentMode(e.target.value)}
-                                name="paymentMode"
-                                id="paymentMode"
-                                className='w-72 h-9 p-1 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="pre">Online</option>
-                                <option value="post">Pay on pick up</option>
-                            </select>
-                        </div>
-                        <button
-                            className='px-4 py-1.5 rounded bg-blue-800 w-fit'
-                            onClick={handleOrderPlacement}
-                        >Proceed to checkout</button>
                     </div>
                 </div>
             }

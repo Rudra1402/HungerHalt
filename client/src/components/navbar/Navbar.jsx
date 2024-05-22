@@ -9,7 +9,7 @@ function Navbar() {
     const { user, setUser } = useContext(AppContext);
     const [openDropdown, setOpenDropdown] = useState(false)
     return (
-        <div className='!h-16 w-full px-10 py-2 flex items-center justify-between gap-6 text-gray-300 text-lg leading-none border-b border-b-purple-700'>
+        <div className='min-h-16 max-h-16 w-full px-10 py-2 flex items-center justify-between gap-6 text-gray-300 text-lg leading-none border-b border-b-purple-700'>
             <Link to={'/'} className='tracking-wider font-semibold'>
                 <img
                     className='h-10 w-auto rounded'
@@ -17,9 +17,16 @@ function Navbar() {
                     alt="HH"
                 />
             </Link>
-            <div className='flex items-center justify-center gap-2'>
-                <Link to={'/feed'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
+            <div className='flex items-center justify-center gap-3'>
+                {user
+                    ? <Link to={'/feed'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
+                    : null
+                }
                 <Link to={'/leaderboard'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Leaderboard</Link>
+                {user
+                    ? <Link to={'/cart'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Cart</Link>
+                    : null
+                }
                 {user
                     ? <div className='relative'>
                         <div
@@ -81,7 +88,10 @@ function Navbar() {
                     : null
                 } */}
                 {!user
-                    ? <Link to={'/signin'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                    ? <>
+                        <Link to={'/signin'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                        <Link to={'/signup'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signup</Link>
+                    </>
                     : null
                 }
             </div>

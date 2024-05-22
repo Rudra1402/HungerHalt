@@ -6,6 +6,7 @@ import { predictHandler } from '../../apis/predictApis';
 import CustomLoader from '../../custom/CustomLoader';
 import hh from "../../assets/images/hungerhalt2.png"
 import { Link } from 'react-router-dom';
+import Footer from '../footer/Footer';
 
 function Home() {
     const [typeOfFood, setTypeOfFood] = useState("");
@@ -88,208 +89,216 @@ function Home() {
     }, [])
 
     return (
-        <div className='h-[calc(100%-64px)] w-full flex gap-5 items-center justify-center text-gray-100 p-4'>
+        <div className='h-[calc(100% - 64px)] overflow-y-auto w-full flex flex-col gap-0 items-center text-gray-100'
+            style={{ scrollbarWidth: "none" }}
+        >
             <div
-                className='h-full w-1/2 flex flex-col gap-12 items-center justify-center border border-purple-700 rounded-md p-4 overflow-auto'
+                className='flex flex-col w-full gap-4 overflow-y-auto items-center p-3'
                 style={{ scrollbarWidth: "none" }}
             >
-                <div className='flex flex-col gap-8 items-center'>
-                    {/* <div className='text-5xl leading-none tracking-wide font-medium'>
+                <div
+                    className='min-h-full w-2/3 flex flex-col gap-12 items-center justify-center border border-purple-700 rounded-md p-4'
+                    style={{ scrollbarWidth: "none" }}
+                >
+                    <div className='flex flex-col gap-8 items-center'>
+                        {/* <div className='text-5xl leading-none tracking-wide font-medium'>
                         HungerHalt
                     </div> */}
-                    <img
-                        src={hh}
-                        alt="HungerHalt"
-                        className='h-36 w-auto rounded-md'
-                        loading='lazy'
-                    />
-                    <div className='text-xl leading-none tracking-wide'>
-                        Rescuing Leftovers, Reviving Communities
+                        <img
+                            src={hh}
+                            alt="HungerHalt"
+                            className='h-36 w-auto rounded-md'
+                            loading='lazy'
+                        />
+                        <div className='text-xl leading-none tracking-wide'>
+                            Rescuing Leftovers, Reviving Communities
+                        </div>
+                        <div className='flex items-center gap-x-4'>
+                            <Link
+                                to={'/feed'}
+                                className='px-5 py-2.5 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Feed</Link>
+                            <button className='px-6 py-3 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Items</button>
+                        </div>
                     </div>
-                    <div className='flex items-center gap-x-4'>
-                        <Link
-                            to={'/feed'}
-                            className='px-5 py-2.5 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Feed</Link>
-                        <button className='px-6 py-3 rounded-md cursor-pointer text-lg leading-none border border-gray-600 hover-btn'>View Items</button>
+                </div>
+                <div
+                    className='h-fit w-2/3 flex flex-col items-center justify-start gap-6 border border-purple-700 rounded-md p-4'
+                    style={{ scrollbarWidth: "none" }}
+                >
+                    <div className='text-2xl underline underline-offset-8'>Wastage Prediction AI</div>
+                    <div className='flex flex-col gap-4'>
+                        <div className='flex items-center gap-x-5 justify-center'>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Type of Food</div>
+                                <select
+                                    id="foodtype"
+                                    name="foodtype"
+                                    value={typeOfFood}
+                                    onChange={e => setTypeOfFood(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Meat">Meat</option>
+                                    <option value="Vegetables">Vegetables</option>
+                                    <option value="Fruits">Fruits</option>
+                                    <option value="Baked Goods">Baked Goods</option>
+                                    <option value="Dairy Products">Dairy Products</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Number of Guests</div>
+                                <input
+                                    id="guestsnumber"
+                                    name="guestsnumber"
+                                    type={'number'}
+                                    value={numberOfGuests}
+                                    placeholder='Number of guests'
+                                    onChange={e => setNumberOfGuests(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                />
+                            </div>
+                        </div>
+                        <div className='flex items-center gap-x-5 justify-center'>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Type of Event</div>
+                                <select
+                                    id="eventtype"
+                                    name="eventtype"
+                                    value={eventType}
+                                    onChange={e => setEventType(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Corporate">Corporate</option>
+                                    <option value="Birthday">Birthday</option>
+                                    <option value="Wedding">Wedding</option>
+                                    <option value="Social Gathering">Social Gathering</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Quantity of Food</div>
+                                <input
+                                    id="foodquantity"
+                                    name="foodquantity"
+                                    type={'number'}
+                                    value={foodQuantity}
+                                    placeholder='Quantity of Food'
+                                    onChange={e => setFoodQuantity(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                />
+                            </div>
+                        </div>
+                        <div className='flex items-center gap-x-5 justify-center'>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Storage Conditions</div>
+                                <select
+                                    id="storageconditions"
+                                    name="storageconditions"
+                                    value={storageConditions}
+                                    onChange={e => setStorageConditions(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Room Temperature">Room Temperature</option>
+                                    <option value="Refrigerated">Refrigerated</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Purchase History</div>
+                                <select
+                                    id="purchasehistory"
+                                    name="purchasehistory"
+                                    value={purchaseHistory}
+                                    onChange={e => setPurchaseHistory(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Occasional">Occasional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className='flex items-center gap-x-5 justify-center'>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Seasonality</div>
+                                <select
+                                    id="seasonality"
+                                    name="seasonality"
+                                    value={seasonality}
+                                    onChange={e => setSeasonality(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="All Seasons">All Seasons</option>
+                                    <option value="Summer">Summer</option>
+                                    <option value="Winter">Winter</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Preparation Method</div>
+                                <select
+                                    id="preparationmethod"
+                                    name="preparationmethod"
+                                    value={preparationMethod}
+                                    onChange={e => setPreparationMethod(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Sit-down Dinner">Sit-down Dinner</option>
+                                    <option value="Finger Food">Finger Food</option>
+                                    <option value="Buffet">Buffet</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className='flex items-center gap-x-5 justify-center'>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Geographical Location</div>
+                                <select
+                                    id="geolocation"
+                                    name="geolocation"
+                                    value={geoLocation}
+                                    onChange={e => setGeoLocation(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Urban">Urban</option>
+                                    <option value="Suburban">Suburban</option>
+                                    <option value="Rural">Rural</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col gap-1.5'>
+                                <div className='text-gray-400'>Pricing</div>
+                                <select
+                                    id="pricing"
+                                    name="pricing"
+                                    value={pricing}
+                                    onChange={e => setPricing(e.target.value)}
+                                    className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
+                                >
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex items-center gap-3'>
+                        {isValuePredicted
+                            ? <CustomLoader />
+                            : <button
+                                className='px-8 py-3 rounded-md cursor-pointer text-lg leading-none border border-gray-600 w-fit hover-btn'
+                                onClick={predictionApiHandler}
+                            >Predict</button>
+                        }
+                        {wastePrediction != null
+                            ? <div className='px-6 py-3 border border-gray-600 rounded-md text-lg leading-none bg-gray-700 text-gray-100'>{wastePrediction < 0 ? "0" : wastePrediction}Kg of waste predicted.</div>
+                            : null
+                        }
                     </div>
                 </div>
             </div>
-            <div
-                className='h-full w-1/2 flex flex-col items-center justify-start gap-6 border border-purple-700 rounded-md p-4 overflow-auto'
-                style={{ scrollbarWidth: "none" }}
-            >
-                <div className='text-2xl underline underline-offset-8'>Prediction AI</div>
-                <div className='flex flex-col gap-4'>
-                    <div className='flex items-center gap-x-5 justify-center'>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Type of Food</div>
-                            <select
-                                id="foodtype"
-                                name="foodtype"
-                                value={typeOfFood}
-                                onChange={e => setTypeOfFood(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Meat">Meat</option>
-                                <option value="Vegetables">Vegetables</option>
-                                <option value="Fruits">Fruits</option>
-                                <option value="Baked Goods">Baked Goods</option>
-                                <option value="Dairy Products">Dairy Products</option>
-                            </select>
-                        </div>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Number of Guests</div>
-                            <input
-                                id="guestsnumber"
-                                name="guestsnumber"
-                                type={'number'}
-                                value={numberOfGuests}
-                                placeholder='Number of guests'
-                                onChange={e => setNumberOfGuests(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            />
-                        </div>
-                    </div>
-                    <div className='flex items-center gap-x-5 justify-center'>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Type of Event</div>
-                            <select
-                                id="eventtype"
-                                name="eventtype"
-                                value={eventType}
-                                onChange={e => setEventType(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Corporate">Corporate</option>
-                                <option value="Birthday">Birthday</option>
-                                <option value="Wedding">Wedding</option>
-                                <option value="Social Gathering">Social Gathering</option>
-                            </select>
-                        </div>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Quantity of Food</div>
-                            <input
-                                id="foodquantity"
-                                name="foodquantity"
-                                type={'number'}
-                                value={foodQuantity}
-                                placeholder='Quantity of Food'
-                                onChange={e => setFoodQuantity(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            />
-                        </div>
-                    </div>
-                    <div className='flex items-center gap-x-5 justify-center'>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Storage Conditions</div>
-                            <select
-                                id="storageconditions"
-                                name="storageconditions"
-                                value={storageConditions}
-                                onChange={e => setStorageConditions(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Room Temperature">Room Temperature</option>
-                                <option value="Refrigerated">Refrigerated</option>
-                            </select>
-                        </div>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Purchase History</div>
-                            <select
-                                id="purchasehistory"
-                                name="purchasehistory"
-                                value={purchaseHistory}
-                                onChange={e => setPurchaseHistory(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Regular">Regular</option>
-                                <option value="Occasional">Occasional</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className='flex items-center gap-x-5 justify-center'>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Seasonality</div>
-                            <select
-                                id="seasonality"
-                                name="seasonality"
-                                value={seasonality}
-                                onChange={e => setSeasonality(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="All Seasons">All Seasons</option>
-                                <option value="Summer">Summer</option>
-                                <option value="Winter">Winter</option>
-                            </select>
-                        </div>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Preparation Method</div>
-                            <select
-                                id="preparationmethod"
-                                name="preparationmethod"
-                                value={preparationMethod}
-                                onChange={e => setPreparationMethod(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Sit-down Dinner">Sit-down Dinner</option>
-                                <option value="Finger Food">Finger Food</option>
-                                <option value="Buffet">Buffet</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className='flex items-center gap-x-5 justify-center'>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Geographical Location</div>
-                            <select
-                                id="geolocation"
-                                name="geolocation"
-                                value={geoLocation}
-                                onChange={e => setGeoLocation(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Urban">Urban</option>
-                                <option value="Suburban">Suburban</option>
-                                <option value="Rural">Rural</option>
-                            </select>
-                        </div>
-                        <div className='flex flex-col gap-1.5'>
-                            <div className='text-gray-400'>Pricing</div>
-                            <select
-                                id="pricing"
-                                name="pricing"
-                                value={pricing}
-                                onChange={e => setPricing(e.target.value)}
-                                className='w-64 h-12 p-2 rounded-md text-gray-800 text-lg leading-none'
-                            >
-                                <option value="">Select</option>
-                                <option value="Low">Low</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="High">High</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className='flex items-center gap-3'>
-                    {isValuePredicted
-                        ? <CustomLoader />
-                        : <button
-                            className='px-8 py-3 rounded-md cursor-pointer text-lg leading-none border border-gray-600 w-fit hover-btn'
-                            onClick={predictionApiHandler}
-                        >Predict</button>
-                    }
-                    {wastePrediction != null
-                        ? <div className='px-6 py-3 border border-gray-600 rounded-md text-lg leading-none bg-gray-700 text-gray-100'>{wastePrediction < 0 ? "0" : wastePrediction}Kg of waste predicted.</div>
-                        : null
-                    }
-                </div>
-            </div>
+            <Footer />
         </div>
     )
 }
