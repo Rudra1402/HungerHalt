@@ -67,3 +67,44 @@ export const getPartnerDataById = async (id, setPartnerData, setIsLoading) => {
             setIsLoading(false)
         })
 }
+
+export const leaderboardPartners = async (setPartners, setIsLoading) => {
+    setIsLoading(true)
+    let userId = getUserId()
+    let headers = {}
+    if (userId) {
+        headers = { ...headers, userId: userId };
+    }
+
+    const config = headers && Object.keys(headers).length > 0 ? { headers } : {};
+
+    function calculatePartnerScore(partner) {
+        const { netItemsCount, ordersPlaced } = partner;
+
+        if (netItemsCount === 0 && ordersPlaced === 0) {
+            return 0;
+        }
+
+        const conversionRate = ordersPlaced / netItemsCount;
+
+        const score = conversionRate * Math.log(netItemsCount + 1);
+        return score;
+    }
+
+    await api.get('/partner', config)
+        .then(response => {
+            let p = response.data?.partners
+            const leaderboard = p.map(partner => ({
+                partner,
+                score: calculatePartnerScore(partner)
+            }));
+
+            leaderboard.sort((a, b) => b.score - a.score);
+
+            setPartners(leaderboard)
+            setIsLoading(false)
+        }).catch(err => {
+            console.log(err?.response?.data?.message)
+            setIsLoading(false)
+        })
+}

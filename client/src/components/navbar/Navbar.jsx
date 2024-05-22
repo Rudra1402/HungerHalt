@@ -18,9 +18,15 @@ function Navbar() {
                 />
             </Link>
             <div className='flex items-center justify-center gap-3'>
-                <Link to={'/feed'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
+                {user
+                    ? <Link to={'/feed'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Feed</Link>
+                    : null
+                }
                 <Link to={'/leaderboard'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Leaderboard</Link>
-                <Link to={'/cart'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Cart</Link>
+                {user
+                    ? <Link to={'/cart'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Cart</Link>
+                    : null
+                }
                 {user
                     ? <div className='relative'>
                         <div
@@ -82,7 +88,10 @@ function Navbar() {
                     : null
                 } */}
                 {!user
-                    ? <Link to={'/signin'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                    ? <>
+                        <Link to={'/signin'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signin</Link>
+                        <Link to={'/signup'} className='cursor-pointer px-2 py-1.5 rounded hover:bg-gray-200 hover:text-gray-800'>Signup</Link>
+                    </>
                     : null
                 }
             </div>

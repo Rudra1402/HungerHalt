@@ -12,6 +12,7 @@ import Feed from './components/feed/Feed';
 import PartnerProfile from './components/profiles/PartnerProfile';
 import Cart from './components/cart/Cart';
 import Orders from './components/orders/Orders';
+import Leaderboard from './components/leaderboard/Leaderboard';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/orders/:id" element={<Orders />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/partner/:id" element={<PartnerProfile />} />
         </Routes>
       </Router>
