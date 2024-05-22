@@ -124,8 +124,8 @@ function Signup() {
                             <br /><br />
                             &rarr; From mitigating wastage to providing food at inexpensive rates much lower than market price as well as a provision of free-of-charge resources, our work seeks to ensure optimal resource utilization and contribute to the pursuit of zero hunger.</div>
                     </div>
-                    <div className='max-h-[4/5] w-1/2 h-full p-8 border border-purple-700 rounded-md shadow-md flex flex-col items-center justify-center gap-6'>
-                        <div className='flex flex-col gap-4 px-8 py-6 rounded-lg form-container'>
+                    <div className='max-h-[4/5] w-1/2 h-full p-8 border border-purple-700 rounded-md shadow-md flex flex-col items-center gap-6 overflow-y-auto'>
+                        <div className='flex flex-col gap-4 px-8 py-6 rounded-lg m-auto form-container'>
                             <div className='text-2xl mb-3 leading-none tracking-wider underline underline-offset-4'>Signup</div>
                             {page == 1
                                 ? <div className='flex flex-col gap-1.5'>
@@ -204,7 +204,7 @@ function Signup() {
                             {page == 3
                                 ? <div className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-1.5'>
-                                        <div className='text-gray-400'>Name</div>
+                                        <div className='text-gray-400'>Banner Image</div>
                                         <input
                                             id="bannerImage"
                                             name="bannerImage"
@@ -217,7 +217,7 @@ function Signup() {
                                         />
                                     </div>
                                     <div className='flex flex-col gap-1.5'>
-                                        <div className='text-gray-400'>Name</div>
+                                        <div className='text-gray-400'>Logo</div>
                                         <input
                                             id="logo"
                                             name="logo"
@@ -230,7 +230,7 @@ function Signup() {
                                         />
                                     </div>
                                     <div className='flex flex-col gap-1.5'>
-                                        <div className='text-gray-400'>Name</div>
+                                        <div className='text-gray-400'>Description</div>
                                         <textarea
                                             id="description"
                                             name="description"
