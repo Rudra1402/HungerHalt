@@ -36,6 +36,10 @@ const partnerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    totalVotes: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true
