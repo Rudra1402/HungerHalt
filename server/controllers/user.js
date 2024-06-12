@@ -115,3 +115,12 @@ exports.updateUser = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+exports.updateVote = async (req, res) => {
+    const { userId, partnerId } = req.body;
+    try {
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
