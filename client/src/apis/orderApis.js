@@ -43,7 +43,7 @@ export const getOrdersByPartnerId = async (id, setOrders, setPartner, setIsLoadi
         })
 }
 
-export const updateOrder = async (orderId, partnerId) => {
+export const updateOrder = async (orderId, partnerId, setReRender) => {
     let userId = getUserId()
     let headers = {}
     if (userId) {
@@ -55,6 +55,7 @@ export const updateOrder = async (orderId, partnerId) => {
     await api.put(`/order/${orderId}`, { partnerId: partnerId }, config)
         .then(response => {
             console.log("Order ID Verified!")
+            setReRender(new Date().getTime())
         }).catch(err => {
             console.log(err?.response?.data?.message)
         })

@@ -54,7 +54,7 @@ function FeedMain({ stores, restaurants, dcenters, posts }) {
             >
                 {posts?.map((post, index) => (
                     <div
-                        className='flex flex-col rounded overflow-hidden border border-gray-600 w-full min-h-[312px]'
+                        className='flex flex-col rounded-md overflow-hidden border border-gray-600 w-full min-h-[312px]'
                         key={index}
                     >
                         <img

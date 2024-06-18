@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getPartnerDataById } from '../../apis/partnerApis';
 import CustomLoader from '../../custom/CustomLoader';
 import linklogo from '../../assets/images/linklogo.jpg'
@@ -56,20 +56,23 @@ function PartnerProfile() {
                             />
                         </div>
                         <div className='px-3 flex flex-col gap-y-4 w-full'>
-                            <div className='flex items-center gap-x-3'>
-                                <div className='text-3xl leading-none'>{partner?.userId?.name}</div>
-                                <a
-                                    href={partner?.socials}
-                                    rel='noreferer'
-                                    target={'_blank'}
-                                    className='text-blue-400'
-                                >
-                                    <img
-                                        src={linklogo}
-                                        alt="Link Logo"
-                                        className='h-7 w-7 rounded-full'
-                                    />
-                                </a>
+                            <div className='flex items-center gap-x-4 justify-between'>
+                                <div className='flex items-center gap-x-3'>
+                                    <div className='text-3xl leading-none'>{partner?.userId?.name}</div>
+                                    <a
+                                        href={partner?.socials}
+                                        rel='noreferer'
+                                        target={'_blank'}
+                                        className='text-blue-400'
+                                    >
+                                        <img
+                                            src={linklogo}
+                                            alt="Link Logo"
+                                            className='h-7 w-7 rounded-full'
+                                        />
+                                    </a>
+                                </div>
+                                <Link to={`/orders/${user?.partnerId}`} className='px-3 py-2 tracking-wide text-sm rounded bg-green-700 text-gray-200'>Active Orders</Link>
                             </div>
                             <p className='!m-0 text-gray-400 text-sm leading-none tracking-wide'>
                                 {partner?.userId?.address}
