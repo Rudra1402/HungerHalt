@@ -41,3 +41,28 @@ export const getPostByPartnerId = async (id, setPosts, setIsLoading) => {
             setIsLoading(false)
         })
 }
+
+export const addPostForPartner = async (pId, title, description, setReRender, setOpenAddPostDialog, imageUrl = "https://i.pinimg.com/originals/11/29/1b/11291b781cd4d7d055d2f5cbe54a42cc.jpg") => {
+    let userId = getUserId()
+    let headers = {}
+    if (userId) {
+        headers = { ...headers, userId: userId };
+    }
+
+    const config = headers && Object.keys(headers).length > 0 ? { headers } : {};
+
+    const payload = {
+        title,
+        description,
+        imageUrl
+    }
+
+    await api.post(`/post/${pId}`, payload, config)
+        .then(response => {
+            setReRender(new Date().getTime())
+            setOpenAddPostDialog(false)
+        }).catch(err => {
+            console.log(err?.response?.data?.message)
+            // setIsLoading(false)
+        })
+}

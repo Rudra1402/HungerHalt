@@ -4,6 +4,7 @@ import { getOrdersByPartnerId, updateOrder } from '../../apis/orderApis';
 import AppContext from '../../context/AppContext';
 import CustomLoader from '../../custom/CustomLoader';
 import { formatRelativeTime } from '../../utils/formatTime';
+import { FaArrowLeft } from 'react-icons/fa'
 
 function Orders() {
     const navigate = useNavigate();
@@ -24,6 +25,10 @@ function Orders() {
         }
     }, [user, id, navigate, reRender]);
 
+    useEffect(() => {
+        document.title = "HungerHalt / Orders"
+    }, [])
+
     const handleVerifyButton = (o_id, oId) => {
         updateOrder(oId, user?.partnerId, setReRender);
         setOrderIds((prevOrderIds) => ({ ...prevOrderIds, [o_id]: oId }));
@@ -36,8 +41,11 @@ function Orders() {
             ) : (
                 <div className='h-[calc(100%-64px)] w-full text-gray-100 flex flex-col items-center justify-start p-4'>
                     <div className='flex flex-col gap-y-6 h-full w-[80%] overflow-y-auto'>
-                        <div className='text-2xl font-semibold pb-3 border-b border-gray-600 w-full'>
-                            Orders / {partner ? partner?.userId?.name : "Partner"}
+                        <div className='text-2xl font-semibold flex items-center justify-start gap-x-4 pb-3 border-b border-gray-600 w-full'>
+                            <FaArrowLeft
+                                className='text-xl leading-none cursor-pointer'
+                                onClick={() => navigate(-1)}
+                            />Orders / {partner ? partner?.userId?.name : "Partner"}
                         </div>
                         <div className='flex items-start justify-start flex-wrap gap-5'>
                             {orders?.map((order, index) => (
