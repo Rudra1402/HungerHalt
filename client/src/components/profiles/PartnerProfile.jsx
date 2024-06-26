@@ -1,48 +1,97 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getPartnerDataById } from '../../apis/partnerApis';
 import CustomLoader from '../../custom/CustomLoader';
-import linklogo from '../../assets/images/linklogo.jpg'
+import linklogo from '../../assets/images/linklogo.jpg';
 import AppContext from '../../context/AppContext';
-import className from 'classnames'
-import { getPostByPartnerId } from '../../apis/postApis';
-import { formatRelativeTime } from '../../utils/formatTime'
+import className from 'classnames';
+import { addPostForPartner, getPostByPartnerId } from '../../apis/postApis';
+import { formatRelativeTime } from '../../utils/formatTime';
+import { getItemsByPartner } from '../../apis/itemApis';
 
 function PartnerProfile() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(AppContext);
     const { id } = useParams();
-    const [partner, setPartner] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [tab, setTab] = useState(1)
+    const [partner, setPartner] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [tab, setTab] = useState(1);
 
-    const [posts, setPosts] = useState(null)
+    const [openAddPostDialog, setOpenAddPostDialog] = useState(false);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [reRender, setReRender] = useState(new Date().getTime());
+
+    const [posts, setPosts] = useState(null);
+    const [items, setItems] = useState(null);
 
     useEffect(() => {
-        let userItem = JSON.parse(localStorage.getItem('user'))
+        let userItem = JSON.parse(localStorage.getItem('user'));
         if (userItem?.token) {
-            getPartnerDataById(id, setPartner, setIsLoading)
-            getPostByPartnerId(id, setPosts, setIsLoading)
+            getPartnerDataById(id, setPartner, setIsLoading);
+            getPostByPartnerId(id, setPosts, setIsLoading);
+            getItemsByPartner(setItems, user?.partnerId, setIsLoading)
         } else {
-            navigate("/signin")
+            navigate("/signin");
         }
-    }, [user])
+    }, [user, reRender]);
 
     useEffect(() => {
-        document.title = "HungerHalt / Partner"
-    }, [])
+        document.title = "HungerHalt / Partner";
+    }, []);
+
+    const addPost = (
+        <div className='absolute top-0 right-0 left-0 bottom-0 bg-[#0008] flex items-center justify-center z-10'>
+            <div className='flex flex-col gap-y-3 bg-white p-4 rounded-md text-gray-700 min-w-[320px] w-1/3'>
+                <div className='text-xl leading-none font-semibold text-center pb-3 border-b border-b-gray-400'>Add Post</div>
+                <div className='flex flex-col gap-1.5'>
+                    <div className='text-gray-500'>Title</div>
+                    <input
+                        id="title"
+                        name="title"
+                        type='text'
+                        value={title}
+                        placeholder='Post Title'
+                        onChange={e => setTitle(e.target.value)}
+                        className='w-full h-12 p-2 rounded-md border !border-gray-500 text-lg leading-none'
+                        required
+                    />
+                </div>
+                <div className='flex flex-col gap-1.5'>
+                    <div className='text-gray-500'>Description</div>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={description}
+                        placeholder='Description'
+                        onChange={e => setDescription(e.target.value)}
+                        rows={3}
+                        className='w-full resize-none px-2 py-3 border border-gray-500 rounded-md text-lg leading-none'
+                        required
+                    />
+                </div>
+                <div className='flex items-center justify-end w-full gap-x-3'>
+                    <button
+                        className='px-3 py-2 tracking-wide text-sm rounded bg-green-500 text-gray-100'
+                        onClick={() => addPostForPartner(user?.partnerId, title, description, setReRender, setOpenAddPostDialog)}
+                    >Add Post</button>
+                    <button
+                        className='px-3 py-2 tracking-wide text-sm rounded bg-red-500 text-gray-100'
+                        onClick={() => setOpenAddPostDialog(false)}
+                    >Close</button>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <>
-            {isLoading
-                ? <CustomLoader />
-                : <div
-                    className='h-[calc(100%-64px)] w-full text-gray-100 flex items-start justify-center p-4'
-                >
-                    <div
-                        className='h-full w-[80%] flex flex-col gap-y-4 overflow-y-auto'
-                        style={{ scrollbarWidth: "none" }}
-                    >
+            {isLoading ? (
+                <CustomLoader />
+            ) : (
+                <div className='h-[calc(100%-64px)] w-full text-gray-100 flex items-start justify-center p-4 relative'>
+                    {openAddPostDialog && addPost}
+                    <div className='h-full w-[80%] flex flex-col gap-y-4 overflow-y-auto' style={{ scrollbarWidth: "none" }}>
                         <div className='min-h-[316px] w-full relative'>
                             <img
                                 src={partner?.bannerImage}
@@ -61,8 +110,8 @@ function PartnerProfile() {
                                     <div className='text-3xl leading-none'>{partner?.userId?.name}</div>
                                     <a
                                         href={partner?.socials}
-                                        rel='noreferer'
-                                        target={'_blank'}
+                                        rel='noreferrer'
+                                        target='_blank'
                                         className='text-blue-400'
                                     >
                                         <img
@@ -72,7 +121,9 @@ function PartnerProfile() {
                                         />
                                     </a>
                                 </div>
-                                <Link to={`/orders/${user?.partnerId}`} className='px-3 py-2 tracking-wide text-sm rounded bg-green-700 text-gray-200'>Active Orders</Link>
+                                <Link to={`/orders/${user?.partnerId}`} className='px-3 py-2 tracking-wide text-sm rounded bg-green-700 text-gray-200'>
+                                    Active Orders
+                                </Link>
                             </div>
                             <p className='!m-0 text-gray-400 text-sm leading-none tracking-wide'>
                                 {partner?.userId?.address}
@@ -82,25 +133,34 @@ function PartnerProfile() {
                                 <div className='flex items-end justify-between gap-x-4'>
                                     <div className='flex items-center gap-x-0 text-gray-400'>
                                         <div
-                                            className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab == 1 ? '!border-b-gray-200 text-gray-200' : '')}
+                                            className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab === 1 ? '!border-b-gray-200 text-gray-200' : '')}
                                             onClick={() => setTab(1)}
-                                        >Posts</div>
+                                        >
+                                            Posts
+                                        </div>
                                         <div
-                                            className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab == 2 ? '!border-b-gray-200 text-gray-200' : '')}
+                                            className={className('border-b-2 cursor-pointer border-b-gray-600 py-1 px-2.5', tab === 2 ? '!border-b-gray-200 text-gray-200' : '')}
                                             onClick={() => setTab(2)}
-                                        >Items</div>
+                                        >
+                                            Items
+                                        </div>
                                     </div>
-                                    {tab == 1
-                                        ? <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>Add Post</button>
-                                        : null
-                                    }
-                                    {tab == 2
-                                        ? <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>Add Item</button>
-                                        : null
-                                    }
+                                    {tab === 1 && (
+                                        <button
+                                            className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'
+                                            onClick={() => setOpenAddPostDialog(true)}
+                                        >
+                                            Add Post
+                                        </button>
+                                    )}
+                                    {tab === 2 && (
+                                        <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>
+                                            Add Item
+                                        </button>
+                                    )}
                                 </div>
-                                {tab == 1
-                                    ? <div className='flex items-start justify-start flex-wrap w-full gap-4'>
+                                {tab === 1 && (
+                                    <div className='flex items-start justify-start flex-wrap w-full gap-4'>
                                         {posts?.map((post, index) => (
                                             <div
                                                 className='flex flex-col rounded overflow-hidden border border-gray-600 w-[32.25%] min-w-[340px]'
@@ -123,39 +183,103 @@ function PartnerProfile() {
                                                     <div className='text-xl leading-none text-gray-200 tracking-wide font-semibold'>
                                                         {post?.title}
                                                     </div>
-                                                    <p className='text-gray-300 leading-6 overflow-hidden text-ellipsis line-clamp-2 w-full'>{post?.description}</p>
+                                                    <p className='text-gray-300 leading-6 overflow-hidden text-ellipsis line-clamp-2 w-full'>
+                                                        {post?.description}
+                                                    </p>
                                                 </div>
                                             </div>
                                         ))}
-                                        {posts?.length == 0
-                                            ? <div className='text-base leading-none tracking-wide text-gray-400 p-1'>No posts found!</div>
-                                            : null
-                                        }
+                                        {posts?.length === 0 && (
+                                            <div className='text-base leading-none tracking-wide text-gray-400 p-1'>
+                                                No posts found!
+                                            </div>
+                                        )}
                                     </div>
-                                    : null
-                                }
-                                {tab == 2
-                                    ? <div className='flex items-start justify-start flex-wrap w-full gap-x-4'>Items</div>
-                                    : null
-                                }
-                            </div>
-                            <div className='flex flex-col gap-y-2'>
-                                <div className=''>Tags</div>
-                                <div className='flex items-center gap-x-2 !text-xs'>
-                                    {partner?.tags?.map((tag, ix) => (
-                                        <div
-                                            key={ix}
-                                            className='py-0.5 px-1.5 rounded tracking-wide font-semibold bg-gray-300 text-gray-900'
-                                        >{tag}</div>
-                                    ))}
+                                )}
+                                {tab === 2 && (
+                                    <div className='flex items-start justify-start flex-wrap w-full gap-x-4'>
+                                        {items?.map((item, index) => {
+                                            // const itemIndex = cart.findIndex(c => c._id === item?._id);
+                                            return (
+                                                <div
+                                                    className='flex flex-col rounded overflow-hidden border border-gray-600 min-w-[340px] w-[32%]'
+                                                    key={index}
+                                                >
+                                                    <img
+                                                        src={item?.postId?.image}
+                                                        alt="Image"
+                                                        className='min-h-44 max-h-44 min-w-full object-cover bg-white'
+                                                    />
+                                                    <div className='flex flex-col px-2 py-3 gap-y-2'>
+                                                        <div className='flex items-center justify-between'>
+                                                            <Link
+                                                                to={`/partner/${item?.partnerId?._id}`}
+                                                                className='text-blue-300 cursor-pointer'
+                                                            >
+                                                                {item?.partnerId?.userId?.name}
+                                                            </Link>
+                                                            <div className='text-sm leading-none text-gray-400'>
+                                                                {formatRelativeTime(item?.createdAt)}
+                                                            </div>
+                                                        </div>
+                                                        <div className='text-xl leading-none text-gray-200 tracking-wide font-semibold'>
+                                                            {item?.postId?.title}
+                                                        </div>
+                                                        <p className='text-gray-300 leading-6 overflow-hidden text-ellipsis line-clamp-2 w-full'>
+                                                            {item?.postId?.description}
+                                                        </p>
+                                                        <div className='flex items-center justify-between gap-x-3 text-sm px-0'>
+                                                            <div className='text-gray-400'>Available Quantity: {item?.quantity}</div>
+                                                            <div className='text-gray-400'>Price Per: ${item?.price}</div>
+                                                        </div>
+                                                        {/* <div className='flex items-center justify-center gap-x-3 mt-1'>
+                                                            {itemIndex === -1 ? (
+                                                                <button
+                                                                    className='w-full bg-blue-600 text-gray-100 px-3 py-2 rounded leading-none !m-0'
+                                                                    onClick={() => handleAddToCart(item)}
+                                                                >
+                                                                    Add to cart
+                                                                </button>
+                                                            ) : (
+                                                                <div className='flex items-center justify-center gap-x-3 w-full'>
+                                                                    <button className='w-1/4 text-center py-2 text-lg leading-none !m-0 bg-gray-300 rounded text-gray-700'>
+                                                                        -
+                                                                    </button>
+                                                                    <div className='w-2/4 text-center py-2 text-lg font-semibold leading-none !m-0 bg-white rounded text-gray-800'>
+                                                                        {cart[itemIndex]?.oq}
+                                                                    </div>
+                                                                    <button className='w-1/4 text-center py-2 text-lg leading-none !m-0 bg-gray-300 rounded text-gray-700'>
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            )}
+                                                        </div> */}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                                <div className='flex flex-col gap-y-2'>
+                                    <div>Tags</div>
+                                    <div className='flex items-center gap-x-2 !text-xs'>
+                                        {partner?.tags?.map((tag, ix) => (
+                                            <div
+                                                key={ix}
+                                                className='py-0.5 px-1.5 rounded tracking-wide font-semibold bg-gray-300 text-gray-900'
+                                            >
+                                                {tag}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
+            )}
         </>
-    )
+    );
 }
 
-export default PartnerProfile
+export default PartnerProfile;
