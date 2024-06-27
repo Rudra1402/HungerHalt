@@ -25,7 +25,7 @@ function Signup() {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        document.title = "HungerHalt / Signup"
+        document.title = "Versuss / Signup"
     }, [])
 
     const nextHandler = () => {
@@ -118,9 +118,9 @@ function Signup() {
                         className='flex flex-col overflow-y-auto items-center gap-8 w-1/2 h-full border p-8 border-purple-700 rounded-md'
                         style={{ scrollbarWidth: "none" }}
                     >
-                        <div className='text-3xl leading-none'>HungerHalt</div>
+                        <div className='text-3xl leading-none'>Versuss</div>
                         <div className='text-xl px-6 leading-8 tracking-wider'>
-                            &rarr; HungerHalt aims to not only provide a solution to reduce food wastage and optimize the quantity of raw materials to be purchased based on consumers, but also a medium to redistribute unprocessed or processed items between stores, restaurants, and any entity in the ‘consumable products’ sector and facilitate in clearing items closer to expiration to those in need.
+                            &rarr; Versuss aims to not only provide a solution to reduce food wastage and optimize the quantity of raw materials to be purchased based on consumers, but also a medium to redistribute unprocessed or processed items between stores, restaurants, and any entity in the ‘consumable products’ sector and facilitate in clearing items closer to expiration to those in need.
                             <br /><br />
                             &rarr; From mitigating wastage to providing food at inexpensive rates much lower than market price as well as a provision of free-of-charge resources, our work seeks to ensure optimal resource utilization and contribute to the pursuit of zero hunger.</div>
                     </div>

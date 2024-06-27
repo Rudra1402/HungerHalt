@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import fightfoodwaste from '../../assets/images/fightfoodwaste.png'
 import Toast from '../../custom/CustomToast';
+import versuss from "../../assets/images/versuss.png"
 import 'react-toastify/dist/ReactToastify.css';
 import { predictHandler } from '../../apis/predictApis';
 import CustomLoader from '../../custom/CustomLoader';
@@ -104,12 +105,15 @@ function Home() {
                         {/* <div className='text-5xl leading-none tracking-wide font-medium'>
                         HungerHalt
                     </div> */}
-                        <img
-                            src={hh}
-                            alt="HungerHalt"
-                            className='h-36 w-auto rounded-md'
-                            loading='lazy'
-                        />
+                        <div className='flex items-center justify-center gap-5'>
+                            <img
+                                src={versuss}
+                                alt="Versuss"
+                                className='h-36 w-auto rounded-lg'
+                                loading='lazy'
+                            />
+                            <div className='py-10 px-8 text-6xl font-semibold leading-none rounded bg-white text-purple-600'>Versuss</div>
+                        </div>
                         <div className='text-xl leading-none tracking-wide'>
                             Rescuing Leftovers, Reviving Communities
                         </div>
