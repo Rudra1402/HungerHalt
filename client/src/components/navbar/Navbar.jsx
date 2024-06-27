@@ -11,11 +11,12 @@ function Navbar() {
     return (
         <div className='min-h-16 max-h-16 w-full px-10 py-2 flex items-center justify-between gap-6 text-gray-300 text-lg leading-none border-b border-b-purple-700'>
             <Link to={'/'} className='tracking-wider font-semibold'>
-                <img
+                {/* <img
                     className='h-10 w-auto rounded'
                     src={hh}
                     alt="HH"
-                />
+                /> */}
+                <div className='py-2 px-2 rounded bg-white text-purple-500'>Versuss</div>
             </Link>
             <div className='flex items-center justify-center gap-3'>
                 {user

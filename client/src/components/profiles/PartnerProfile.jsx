@@ -8,6 +8,7 @@ import className from 'classnames';
 import { addPostForPartner, getPostByPartnerId } from '../../apis/postApis';
 import { formatRelativeTime } from '../../utils/formatTime';
 import { getItemsByPartner } from '../../apis/itemApis';
+import { IoLocationSharp } from 'react-icons/io5'
 
 function PartnerProfile() {
     const navigate = useNavigate();
@@ -30,10 +31,12 @@ function PartnerProfile() {
         if (userItem?.token) {
             getPartnerDataById(id, setPartner, setIsLoading);
             getPostByPartnerId(id, setPosts, setIsLoading);
-            getItemsByPartner(setItems, user?.partnerId, setIsLoading)
+            getItemsByPartner(setItems, id, setIsLoading)
         } else {
             navigate("/signin");
         }
+
+        console.log(user)
     }, [user, reRender]);
 
     useEffect(() => {
@@ -105,30 +108,37 @@ function PartnerProfile() {
                             />
                         </div>
                         <div className='px-3 flex flex-col gap-y-4 w-full'>
-                            <div className='flex items-center gap-x-4 justify-between'>
+                            <div className='flex items-center gap-x-4 justify-between rounded-lg'>
                                 <div className='flex items-center gap-x-3'>
-                                    <div className='text-3xl leading-none'>{partner?.userId?.name}</div>
+                                    <div className='text-3xl leading-none text-gray-200 font-semibold'>{partner?.userId?.name}</div>
                                     <a
                                         href={partner?.socials}
                                         rel='noreferrer'
                                         target='_blank'
-                                        className='text-blue-400'
+                                        className='text-blue-400 hover:text-blue-600 transition-colors duration-200'
                                     >
                                         <img
                                             src={linklogo}
                                             alt="Link Logo"
-                                            className='h-7 w-7 rounded-full'
+                                            className='h-7 w-7 rounded-full shadow-md hover:shadow-lg transition-shadow duration-200'
                                         />
                                     </a>
                                 </div>
-                                <Link to={`/orders/${user?.partnerId}`} className='px-3 py-2 tracking-wide text-sm rounded bg-green-700 text-gray-200'>
-                                    Active Orders
-                                </Link>
+                                {user?.isPartner && (
+                                    <Link
+                                        to={`/orders/${user?.partnerId}`}
+                                        className='px-4 py-2 tracking-wide text-sm rounded bg-green-700 text-gray-200 hover:bg-green-600 transition-colors duration-200'
+                                    >
+                                        Active Orders
+                                    </Link>
+                                )}
                             </div>
-                            <p className='!m-0 text-gray-400 text-sm leading-none tracking-wide'>
-                                {partner?.userId?.address}
+                            <p className='mt-2 flex items-center justify-start gap-x-2 text-gray-400 text-base leading-none tracking-wide'>
+                                <IoLocationSharp className='text-lg' />{partner?.userId?.address}
                             </p>
-                            <p className='!m-0 text-gray-300 tracking-wide'>{partner?.description}</p>
+                            <p className='mt-1 text-gray-300 tracking-wide'>
+                                {partner?.description}
+                            </p>
                             <div className='flex flex-col gap-y-4 py-2 w-full'>
                                 <div className='flex items-end justify-between gap-x-4'>
                                     <div className='flex items-center gap-x-0 text-gray-400'>
@@ -145,35 +155,40 @@ function PartnerProfile() {
                                             Items
                                         </div>
                                     </div>
-                                    {tab === 1 && (
-                                        <button
-                                            className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'
-                                            onClick={() => setOpenAddPostDialog(true)}
-                                        >
-                                            Add Post
-                                        </button>
-                                    )}
-                                    {tab === 2 && (
-                                        <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>
-                                            Add Item
-                                        </button>
-                                    )}
+                                    {user?.isPartner
+                                        ? <>
+                                            {tab === 1 && (
+                                                <button
+                                                    className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'
+                                                    onClick={() => setOpenAddPostDialog(true)}
+                                                >
+                                                    Add Post
+                                                </button>
+                                            )}
+                                            {tab === 2 && (
+                                                <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>
+                                                    Add Item
+                                                </button>
+                                            )}
+                                        </>
+                                        : null
+                                    }
                                 </div>
                                 {tab === 1 && (
                                     <div className='flex items-start justify-start flex-wrap w-full gap-4'>
                                         {posts?.map((post, index) => (
                                             <div
-                                                className='flex flex-col rounded overflow-hidden border border-gray-600 w-[32.25%] min-w-[340px]'
+                                                className='flex flex-col rounded-lg overflow-hidden border border-gray-600 w-[32.25%] min-w-[340px] shadow-lg hover:shadow-xl transition-shadow duration-300'
                                                 key={index}
                                             >
                                                 <img
                                                     src={post?.image}
                                                     alt="Image"
-                                                    className='min-h-44 max-h-44 min-w-full object-cover bg-white'
+                                                    className='min-h-44 max-h-44 w-full object-cover bg-white'
                                                 />
-                                                <div className='flex flex-col px-2 py-3 gap-y-2'>
+                                                <div className='flex flex-col px-4 py-4 gap-y-3'>
                                                     <div className='flex items-center justify-between'>
-                                                        <div className='text-blue-300 cursor-pointer'>
+                                                        <div className='text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-200'>
                                                             {post?.partnerId?.userId?.name}
                                                         </div>
                                                         <div className='text-sm leading-none text-gray-400'>
@@ -190,31 +205,30 @@ function PartnerProfile() {
                                             </div>
                                         ))}
                                         {posts?.length === 0 && (
-                                            <div className='text-base leading-none tracking-wide text-gray-400 p-1'>
+                                            <div className='text-base leading-none tracking-wide text-gray-400 p-4 bg-gray-800 rounded-lg'>
                                                 No posts found!
                                             </div>
                                         )}
                                     </div>
                                 )}
                                 {tab === 2 && (
-                                    <div className='flex items-start justify-start flex-wrap w-full gap-x-4'>
+                                    <div className='flex items-start justify-start flex-wrap w-full gap-4'>
                                         {items?.map((item, index) => {
-                                            // const itemIndex = cart.findIndex(c => c._id === item?._id);
                                             return (
                                                 <div
-                                                    className='flex flex-col rounded overflow-hidden border border-gray-600 min-w-[340px] w-[32%]'
+                                                    className='flex flex-col rounded-lg overflow-hidden border border-gray-600 min-w-[340px] w-[32%] shadow-lg hover:shadow-xl transition-shadow duration-300'
                                                     key={index}
                                                 >
                                                     <img
                                                         src={item?.postId?.image}
                                                         alt="Image"
-                                                        className='min-h-44 max-h-44 min-w-full object-cover bg-white'
+                                                        className='min-h-44 max-h-44 w-full object-cover bg-white'
                                                     />
-                                                    <div className='flex flex-col px-2 py-3 gap-y-2'>
+                                                    <div className='flex flex-col px-4 py-4 gap-y-3'>
                                                         <div className='flex items-center justify-between'>
                                                             <Link
                                                                 to={`/partner/${item?.partnerId?._id}`}
-                                                                className='text-blue-300 cursor-pointer'
+                                                                className='text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-200'
                                                             >
                                                                 {item?.partnerId?.userId?.name}
                                                             </Link>
@@ -228,32 +242,10 @@ function PartnerProfile() {
                                                         <p className='text-gray-300 leading-6 overflow-hidden text-ellipsis line-clamp-2 w-full'>
                                                             {item?.postId?.description}
                                                         </p>
-                                                        <div className='flex items-center justify-between gap-x-3 text-sm px-0'>
+                                                        <div className='flex items-center justify-between gap-x-3 text-sm'>
                                                             <div className='text-gray-400'>Available Quantity: {item?.quantity}</div>
                                                             <div className='text-gray-400'>Price Per: ${item?.price}</div>
                                                         </div>
-                                                        {/* <div className='flex items-center justify-center gap-x-3 mt-1'>
-                                                            {itemIndex === -1 ? (
-                                                                <button
-                                                                    className='w-full bg-blue-600 text-gray-100 px-3 py-2 rounded leading-none !m-0'
-                                                                    onClick={() => handleAddToCart(item)}
-                                                                >
-                                                                    Add to cart
-                                                                </button>
-                                                            ) : (
-                                                                <div className='flex items-center justify-center gap-x-3 w-full'>
-                                                                    <button className='w-1/4 text-center py-2 text-lg leading-none !m-0 bg-gray-300 rounded text-gray-700'>
-                                                                        -
-                                                                    </button>
-                                                                    <div className='w-2/4 text-center py-2 text-lg font-semibold leading-none !m-0 bg-white rounded text-gray-800'>
-                                                                        {cart[itemIndex]?.oq}
-                                                                    </div>
-                                                                    <button className='w-1/4 text-center py-2 text-lg leading-none !m-0 bg-gray-300 rounded text-gray-700'>
-                                                                        +
-                                                                    </button>
-                                                                </div>
-                                                            )}
-                                                        </div> */}
                                                     </div>
                                                 </div>
                                             );
