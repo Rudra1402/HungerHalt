@@ -7,7 +7,7 @@ import AppContext from '../../context/AppContext';
 import className from 'classnames';
 import { addPostForPartner, getPostByPartnerId } from '../../apis/postApis';
 import { formatRelativeTime } from '../../utils/formatTime';
-import { getItemsByPartner } from '../../apis/itemApis';
+import { addItemForPartner, getItemsByPartner } from '../../apis/itemApis';
 import { IoLocationSharp } from 'react-icons/io5'
 
 function PartnerProfile() {
@@ -23,6 +23,11 @@ function PartnerProfile() {
     const [description, setDescription] = useState("");
     const [reRender, setReRender] = useState(new Date().getTime());
 
+    const [openAddItemDialog, setOpenAddItemDialog] = useState(false);
+    const [price, setPrice] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+    const [itemPostId, setItemPostId] = useState(null);
+
     const [posts, setPosts] = useState(null);
     const [items, setItems] = useState(null);
 
@@ -35,8 +40,6 @@ function PartnerProfile() {
         } else {
             navigate("/signin");
         }
-
-        console.log(user)
     }, [user, reRender]);
 
     useEffect(() => {
@@ -87,6 +90,68 @@ function PartnerProfile() {
         </div>
     );
 
+    const addItem = (
+        <div className='absolute top-0 right-0 left-0 bottom-0 bg-[#0008] flex items-center justify-center z-10'>
+            <div className='flex flex-col gap-y-3 bg-white p-4 rounded-md text-gray-700 min-w-[320px] w-1/3'>
+                <div className='text-xl leading-none font-semibold text-center pb-3 border-b border-b-gray-400'>Add Item</div>
+                <div className='flex flex-col gap-1.5'>
+                    <div className='text-gray-500'>Price</div>
+                    <input
+                        id="price"
+                        name="price"
+                        type='number'
+                        value={price}
+                        placeholder='Price'
+                        onChange={e => setPrice(e.target.value)}
+                        className='w-full h-12 p-2 rounded-md border !border-gray-500 text-lg leading-none'
+                        required
+                    />
+                </div>
+                <div className='flex flex-col gap-1.5'>
+                    <div className='text-gray-500'>Quantity</div>
+                    <input
+                        id="quantity"
+                        name="quantity"
+                        value={quantity}
+                        placeholder='Quantity'
+                        onChange={e => setQuantity(e.target.value)}
+                        className='w-full h-12 p-2 rounded-md border !border-gray-500 text-lg leading-none'
+                        required
+                    />
+                </div>
+                <div className='flex flex-col gap-1.5'>
+                    <div className='text-gray-500'>Associated Post</div>
+                    <select
+                        name="postid"
+                        id="postid"
+                        value={itemPostId}
+                        onChange={e => setItemPostId(e.target.value)}
+                        className='w-full h-12 p-2 rounded-md border !border-gray-500 text-lg leading-none'
+                        required
+                    >
+                        <option value="">Select post</option>
+                        {posts?.map((post, idx) => (
+                            <option
+                                key={idx}
+                                value={post?._id}
+                            >{post?.title}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className='flex items-center justify-end w-full gap-x-3'>
+                    <button
+                        className='px-3 py-2 tracking-wide text-sm rounded bg-green-500 text-gray-100'
+                        onClick={() => addItemForPartner(user?.partnerId, price, quantity, itemPostId, setReRender, setOpenAddItemDialog)}
+                    >Add Item</button>
+                    <button
+                        className='px-3 py-2 tracking-wide text-sm rounded bg-red-500 text-gray-100'
+                        onClick={() => setOpenAddItemDialog(false)}
+                    >Close</button>
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <>
             {isLoading ? (
@@ -94,6 +159,7 @@ function PartnerProfile() {
             ) : (
                 <div className='h-[calc(100%-64px)] w-full text-gray-100 flex items-start justify-center p-4 relative'>
                     {openAddPostDialog && addPost}
+                    {openAddItemDialog && addItem}
                     <div className='h-full w-[80%] flex flex-col gap-y-4 overflow-y-auto' style={{ scrollbarWidth: "none" }}>
                         <div className='min-h-[316px] w-full relative'>
                             <img
@@ -124,7 +190,7 @@ function PartnerProfile() {
                                         />
                                     </a>
                                 </div>
-                                {user?.isPartner && (
+                                {user?.isPartner && user?.partnerId == id && (
                                     <Link
                                         to={`/orders/${user?.partnerId}`}
                                         className='px-4 py-2 tracking-wide text-sm rounded bg-green-700 text-gray-200 hover:bg-green-600 transition-colors duration-200'
@@ -155,7 +221,7 @@ function PartnerProfile() {
                                             Items
                                         </div>
                                     </div>
-                                    {user?.isPartner
+                                    {user?.isPartner && user?.partnerId == id
                                         ? <>
                                             {tab === 1 && (
                                                 <button
@@ -166,7 +232,10 @@ function PartnerProfile() {
                                                 </button>
                                             )}
                                             {tab === 2 && (
-                                                <button className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'>
+                                                <button
+                                                    className='px-3 py-1 tracking-wide text-sm rounded bg-green-700 text-gray-200'
+                                                    onClick={() => setOpenAddItemDialog(true)}
+                                                >
                                                     Add Item
                                                 </button>
                                             )}
@@ -250,6 +319,11 @@ function PartnerProfile() {
                                                 </div>
                                             );
                                         })}
+                                        {items?.length === 0 && (
+                                            <div className='text-base leading-none tracking-wide text-gray-400 p-4 bg-gray-800 rounded-lg'>
+                                                No items found!
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                                 <div className='flex flex-col gap-y-2'>

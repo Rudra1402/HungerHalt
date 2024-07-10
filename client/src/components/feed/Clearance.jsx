@@ -60,7 +60,7 @@ function Clearance() {
                     style={{ scrollbarWidth: "none" }}
                 >
                     <div className='flex items-center justify-between gap-x-6'>
-                        <div className='text-gray-200 text-2xl tracking-wide leading-none font-semibold'>Clearance Items ({items ? items?.length : 0})</div>
+                        <div className='text-gray-200 text-2xl tracking-wide leading-none font-semibold'>Clearance Items ({filterItems ? filterItems?.length : items?.length})</div>
                         <select
                             name="ptype"
                             id="ptype"
@@ -173,6 +173,10 @@ function Clearance() {
                                     </div>
                                 )
                             })}
+                        {filterItems?.length == 0
+                            ? <div className='text-gray-400 text-center w-full pt-3 border-t border-t-gray-600'>No items found!</div>
+                            : null
+                        }
                     </div>
                 </div>
             }

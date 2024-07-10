@@ -41,7 +41,7 @@ function Navbar() {
                                 className='rounded flex flex-col items-center justify-start bg-gray-100 text-gray-800 absolute py-2 px-2 min-w-40 right-0 top-11 z-50 border border-gray-400 select-none'
                             >
                                 <Link
-                                    to={'/profile'}
+                                    to={`/partner/${user?.partnerId ? user?.partnerId : "662e9d9a895e04167ca8a4da"}`}
                                     className='cursor-pointer px-3 py-2.5 text-center rounded hover:bg-gray-200 w-full'
                                     onClick={() => setOpenDropdown(false)}
                                 >Profile</Link>

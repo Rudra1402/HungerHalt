@@ -41,3 +41,29 @@ export const getItemsByPartner = async (setItems, pId, setIsLoading) => {
             setIsLoading(false)
         })
 }
+
+export const addItemForPartner = async (pId, price, quantity, postId, setReRender, setOpenAddItemialog) => {
+    let userId = getUserId()
+    let headers = {}
+    if (userId) {
+        headers = { ...headers, userId: userId };
+    }
+
+    const config = headers && Object.keys(headers).length > 0 ? { headers } : {};
+
+    const payload = {
+        price,
+        quantity,
+        postId,
+        partnerId: pId
+    }
+
+    await api.post(`/item`, payload, config)
+        .then(response => {
+            setReRender(new Date().getTime())
+            setOpenAddItemialog(false)
+        }).catch(err => {
+            console.log(err?.response?.data?.message)
+            // setIsLoading(false)
+        })
+}
