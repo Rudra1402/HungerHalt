@@ -68,7 +68,7 @@ export const getPartnerDataById = async (id, setPartnerData, setIsLoading) => {
         })
 }
 
-export const leaderboardPartners = async (setPartners, setIsLoading) => {
+export const leaderboardPartners = async (setPartners, setMaxVotedPartner, setIsLoading) => {
     setIsLoading(true)
     let userId = getUserId()
     let headers = {}
@@ -101,6 +101,16 @@ export const leaderboardPartners = async (setPartners, setIsLoading) => {
 
             leaderboard.sort((a, b) => b.score - a.score);
 
+            let maxVotedPartner = null;
+            let maxVotes = -1;
+
+            for (let partner of p) {
+                if (partner.totalVotes > maxVotes) {
+                    maxVotes = partner.totalVotes;
+                    maxVotedPartner = partner;
+                }
+            }
+            setMaxVotedPartner(maxVotedPartner)
             setPartners(leaderboard)
             setIsLoading(false)
         }).catch(err => {

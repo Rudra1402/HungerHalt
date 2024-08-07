@@ -76,7 +76,9 @@ exports.loginUser = async (req, res) => {
             name: user?.name,
             email: user?.email,
             isPartner: user?.isPartner,
-            active: user?.active
+            active: user?.active,
+            hasVoted: user?.hasVoted,
+            votedTo: user?.votedTo
         }
 
         res.status(200).json({ message: 'Login successful', user: loggedInUser });
@@ -116,11 +118,51 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-exports.updateVote = async (req, res) => {
-    const { userId, partnerId } = req.body;
-    try {
+// exports.updateVote = async (req, res) => {
+//     const { userId, partnerId } = req.body;
+//     try {
 
+//     } catch (error) {
+//         res.status(500).json({ success: false, message: error.message });
+//     }
+// }
+
+exports.voteUser = async (req, res) => {
+    try {
+        const { voterId, votedToId } = req.body;
+
+        if (!voterId || !votedToId) {
+            return res.status(400).json({ message: 'Voter ID and VotedTo ID are required' });
+        }
+
+        const voter = await User.findById(voterId);
+        const votedTo = await Partner.findById(votedToId).populate({
+            path: "userId",
+            model: "User",
+            select: "name"
+        });
+        if (!voter || !votedTo) {
+            return res.status(404).json({ message: 'Voter or votedTo user not found' });
+        }
+
+        if (voter.hasVoted) {
+            return res.status(400).json({ message: 'You have already voted' });
+        }
+
+        if (voter?._id.toString() === votedTo?.userId?._id.toString()) {
+            return res.status(400).json({ message: 'You cannot vote for yourself' });
+        }
+
+        votedTo.totalVotes += 1;
+
+        voter.hasVoted = true;
+        voter.votedTo = votedToId;
+
+        await votedTo.save();
+        await voter.save();
+
+        res.status(200).json({ message: 'Vote successfully recorded!' });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: 'An error occurred', error });
     }
-}
+};

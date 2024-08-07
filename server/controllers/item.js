@@ -1,4 +1,5 @@
 const Item = require('../models/item');
+const Post = require('../models/post');
 const Partner = require('../models/partner');
 
 exports.createItems = async (req, res) => {
@@ -155,6 +156,9 @@ exports.deleteItem = async (req, res) => {
             return res.status(404).json({ message: 'Item not found!' });
         }
 
+        let post = await Post.findById(item?.postId);
+
+        const deletedPost = await Post.deleteOne({ _id: post._id });
         const deletedItem = await Item.deleteOne({ _id: itemId });
         if (!deletedItem) {
             return res.status(400).json({ message: 'Failed to delete item!' });

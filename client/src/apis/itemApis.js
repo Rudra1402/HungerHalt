@@ -67,3 +67,21 @@ export const addItemForPartner = async (pId, price, quantity, postId, setReRende
             // setIsLoading(false)
         })
 }
+
+export const deletedItemApi = async (itemId, setReRender, setDeleteAddItemialog) => {
+    let userId = getUserId()
+    let headers = {}
+    if (userId) {
+        headers = { ...headers, userId: userId };
+    }
+
+    const config = headers && Object.keys(headers).length > 0 ? { headers } : {};
+
+    await api.delete(`/item/${itemId}`, config)
+        .then(response => {
+            setReRender(new Date().getTime())
+            setDeleteAddItemialog(false)
+        }).catch(err => {
+            console.log(err?.response?.data?.message)
+        })
+}

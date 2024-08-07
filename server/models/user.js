@@ -30,9 +30,18 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    votes: {
+        type: Number,
+        default: 0
+    },
     hasVoted: {
         type: Boolean,
         default: false
+    },
+    votedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Partner',
+        default: null
     }
 }, {
     timestamps: true

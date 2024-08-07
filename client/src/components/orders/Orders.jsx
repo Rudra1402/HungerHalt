@@ -58,7 +58,7 @@ function Orders() {
                                             {order?.paymentMode === "pre" ? "Paid" : "Pending"}
                                         </div>
                                         <div className='text-gray-400 text-sm'>
-                                            {new Date(order?.createdAt).toLocaleString()} ({formatRelativeTime(order?.createdAt)})
+                                            {new Date(order?.createdAt).toLocaleString()}
                                         </div>
                                     </div>
                                     <div className='text-lg font-medium'>Total Amount - ${order?.totalPrice.toFixed(2)}</div>

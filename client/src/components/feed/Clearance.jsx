@@ -66,7 +66,7 @@ function Clearance() {
                             id="ptype"
                             value={partnerType}
                             onChange={e => setPartnerType(e.target.value)}
-                            className='w-72 h-10 p-1 cursor-pointer rounded-md text-gray-800 text-lg leading-none'
+                            className='w-72 h-10 p-1 cursor-pointer rounded text-gray-800 text-lg leading-none'
                         >
                             <option value="">Select</option>
                             <option value="r">Restaurants</option>
