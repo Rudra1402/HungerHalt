@@ -7,7 +7,7 @@ import AppContext from '../../context/AppContext';
 import className from 'classnames';
 import { addPostForPartner, getPostByPartnerId } from '../../apis/postApis';
 import { formatRelativeTime } from '../../utils/formatTime';
-import { addItemForPartner, getItemsByPartner } from '../../apis/itemApis';
+import { addItemForPartner, deletedItemApi, getItemsByPartner } from '../../apis/itemApis';
 import { IoLocationSharp } from 'react-icons/io5'
 
 function PartnerProfile() {
@@ -27,6 +27,9 @@ function PartnerProfile() {
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
     const [itemPostId, setItemPostId] = useState(null);
+
+    const [openDeleteItemDialog, setOpenDeleteItemDialog] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const [posts, setPosts] = useState(null);
     const [items, setItems] = useState(null);
@@ -152,6 +155,25 @@ function PartnerProfile() {
         </div>
     );
 
+    const deleteItem = (
+        <div className='absolute top-0 right-0 left-0 bottom-0 bg-[#0008] flex items-center justify-center z-10'>
+            <div className='flex flex-col gap-y-3 bg-white p-4 rounded-md text-gray-700 min-w-[320px] w-1/3'>
+                <div className='text-xl leading-none font-semibold text-center pb-3 border-b border-b-gray-400'>Delete Item</div>
+                <div className='text-center px-4'>Are you sure you want to delete the item? It will also delete the associated post!</div>
+                <div className='flex items-center justify-end w-full gap-x-3 mt-3'>
+                    <button
+                        className='px-3 py-2 tracking-wide text-sm rounded bg-green-500 text-gray-100'
+                        onClick={() => deletedItemApi(selectedItem?._id, setReRender, setOpenDeleteItemDialog)}
+                    >Delete</button>
+                    <button
+                        className='px-3 py-2 tracking-wide text-sm rounded bg-red-500 text-gray-100'
+                        onClick={() => setOpenDeleteItemDialog(false)}
+                    >Close</button>
+                </div>
+            </div>
+        </div>
+    )
+
     return (
         <>
             {isLoading ? (
@@ -160,6 +182,7 @@ function PartnerProfile() {
                 <div className='h-[calc(100%-64px)] w-full text-gray-100 flex items-start justify-center p-4 relative'>
                     {openAddPostDialog && addPost}
                     {openAddItemDialog && addItem}
+                    {openDeleteItemDialog && deleteItem}
                     <div className='h-full w-[80%] flex flex-col gap-y-4 overflow-y-auto' style={{ scrollbarWidth: "none" }}>
                         <div className='min-h-[316px] w-full relative'>
                             <img
@@ -314,6 +337,16 @@ function PartnerProfile() {
                                                         <div className='flex items-center justify-between gap-x-3 text-sm'>
                                                             <div className='text-gray-400'>Available Quantity: {item?.quantity}</div>
                                                             <div className='text-gray-400'>Price Per: ${item?.price}</div>
+                                                        </div>
+                                                        <div className='flex items-center border-t border-t-gray-700 justify-start gap-2 pt-2'>
+                                                            <div>Sold out?</div>
+                                                            <button
+                                                                className='underline underline-offset-2'
+                                                                onClick={() => {
+                                                                    setSelectedItem(item)
+                                                                    setOpenDeleteItemDialog(true)
+                                                                }}
+                                                            >Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>

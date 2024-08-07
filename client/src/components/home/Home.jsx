@@ -105,14 +105,14 @@ function Home() {
                         {/* <div className='text-5xl leading-none tracking-wide font-medium'>
                         HungerHalt
                     </div> */}
-                        <div className='flex items-center justify-center gap-5'>
+                        <div className='flex items-center justify-center gap-3 p-4 rounded-md bg-white'>
                             <img
                                 src={versuss}
                                 alt="Versuss"
                                 className='h-36 w-auto rounded-lg'
                                 loading='lazy'
                             />
-                            <div className='py-10 px-8 text-6xl font-semibold leading-none rounded bg-white text-purple-600'>Versuss</div>
+                            <div className='py-10 px-4 text-6xl font-semibold leading-none rounded text-purple-600'>Versuss</div>
                         </div>
                         <div className='text-xl leading-none tracking-wide'>
                             Rescuing Leftovers, Reviving Communities

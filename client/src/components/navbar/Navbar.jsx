@@ -31,7 +31,7 @@ function Navbar() {
                 {user
                     ? <div className='relative'>
                         <div
-                            className='w-9 h-9 rounded-full bg-gray-700 shadow shadow-gray-600 flex items-center justify-center text-lg leading-none cursor-pointer'
+                            className='w-9 h-9 rounded-full bg-gray-300 text-gray-900 shadow shadow-gray-600 flex items-center justify-center text-lg leading-none cursor-pointer'
                             onClick={() => setOpenDropdown(!openDropdown)}
                         >
                             {user?.email?.split("@")[0][0].toUpperCase()}
